@@ -2,32 +2,40 @@
 using Microsoft.EntityFrameworkCore;
 using JokesApi.Data;
 using JokesApi.Models;
+using JokesApi.Dtos;
+using AutoMapper;
+
 
 namespace JokesApi.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class JokesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public JokesController(AppDbContext context)
+        public JokesController(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Jokes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Joke>>> GetJokes()
         {
-            return await _context.Jokes.ToListAsync();
+            return await _context.Jokes.ToListAsync();            
         }
 
         // GET: api/Jokes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Joke>> GetJoke(int id)
-        {
-            var joke = await _context.Jokes.FindAsync(id);
+        {            
+            var joke = await _context.Jokes
+                .Include(_ => _.Category)
+                .Where(_ => _.Id == id)
+                .FirstOrDefaultAsync();
 
             if (joke == null)
             {
@@ -39,16 +47,22 @@ namespace JokesApi.Controllers
 
         // PUT: api/Jokes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutJoke(int id, Joke joke)
+        public async Task<IActionResult> PutJoke(int id, JokeDto joke)
         {
-                     
             if (id != joke.Id)
             {
                 return BadRequest();
             }
 
-            joke.CreatedAt = DateTime.Now;
-            _context.Entry(joke).State = EntityState.Modified;
+            if (!CategoryExists(joke.CategoryId))
+            {
+                return NotFound("Category not found.");
+            }
+
+            var updateJoke = _mapper.Map<Joke>(joke);
+            updateJoke.CreatedAt = DateTime.Now;                      
+
+            _context.Entry(updateJoke).State = EntityState.Modified;
 
             try
             {
@@ -71,13 +85,23 @@ namespace JokesApi.Controllers
 
         // POST: api/Jokes
         [HttpPost]
-        public async Task<ActionResult<Joke>> PostJoke(Joke joke)
+        public async Task<ActionResult<Joke>> PostJoke(JokeDto joke)
         {
-            joke.CreatedAt = DateTime.Now;
-            _context.Jokes.Add(joke);
-            await _context.SaveChangesAsync();
+            if (JokeExists(joke.Id))
+            {
+                return BadRequest("Joke Id already exists.");
+            }
 
-            return CreatedAtAction("GetJoke", new { id = joke.Id }, joke);
+            if (!CategoryExists(joke.CategoryId))
+            {
+                return NotFound("Category not found.");
+            }
+
+            var newJoke = _mapper.Map<Joke>(joke);         
+            newJoke.CreatedAt = DateTime.Now;
+            _context.Jokes.Add(newJoke);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetJoke", new { id = newJoke.Id }, newJoke);
         }
 
         // DELETE: api/Jokes/5
@@ -99,6 +123,11 @@ namespace JokesApi.Controllers
         private bool JokeExists(int id)
         {
             return _context.Jokes.Any(e => e.Id == id);
+        }
+
+        private bool CategoryExists(int id)
+        {
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

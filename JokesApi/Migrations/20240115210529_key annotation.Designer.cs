@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace JokesApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240110203331_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240115210529_key annotation")]
+    partial class keyannotation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,23 @@ namespace JokesApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("JokesApi.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("JokesApi.Models.Joke", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +49,9 @@ namespace JokesApi.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Content")
                         .HasColumnType("text");
@@ -41,7 +61,25 @@ namespace JokesApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Jokes");
+                });
+
+            modelBuilder.Entity("JokesApi.Models.Joke", b =>
+                {
+                    b.HasOne("JokesApi.Models.Category", "Category")
+                        .WithMany("Jokes")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("JokesApi.Models.Category", b =>
+                {
+                    b.Navigation("Jokes");
                 });
 #pragma warning restore 612, 618
         }

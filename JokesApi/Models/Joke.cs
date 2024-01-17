@@ -1,13 +1,14 @@
-﻿using System.Reflection.Metadata;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace JokesApi.Models
 {
     public class Joke
     {
+        [Key]
         public int Id { get; set; }
         public string? Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int CategoryId { get; set; } 
-        public Category Category { get; set; } = null!; 
+        public required int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
