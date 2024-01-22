@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JokesApi.Dtos
+namespace JokesApi_BAL.Models
 {
-    public class CategoryDto
+    public class CategoryModel
     {
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public ICollection<JokeDto>? Jokes { get; }
+        public ICollection<JokeModel>? Jokes { get; }
     }
 }

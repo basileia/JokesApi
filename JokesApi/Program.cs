@@ -1,4 +1,7 @@
-using JokesApi.Data;
+using JokesApi_BAL.Services;
+using JokesApi_DAL.Contracts;
+using JokesApi_DAL.Data;
+using JokesApi_DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +15,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
-
+builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
+builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

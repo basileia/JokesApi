@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JokesApi.Models
+namespace JokesApi_DAL.Entities
 {
     public class Joke
     {

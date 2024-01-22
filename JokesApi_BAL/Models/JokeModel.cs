@@ -1,15 +1,16 @@
-﻿using JokesApi.Models;
+﻿using JokesApi_DAL.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace JokesApi.Dtos
+namespace JokesApi_BAL.Models
 {
-    public class JokeDto
+    public class JokeModel
     {
         [Key]
         public int Id { get; set; }
         public required string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public required int CategoryId { get; set; }
+        
 
     }
 }

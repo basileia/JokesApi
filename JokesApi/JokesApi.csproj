@@ -23,7 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <ProjectReference Include="..\JokesApi_BAL\JokesApi_BAL.csproj" />
+    <ProjectReference Include="..\JokesApi_DAL\JokesApi_DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JokesApi", "JokesApi\JokesApi.csproj", "{51B9BB4A-8B29-41C7-8989-A92AEF45AEF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JokesApi", "JokesApi\JokesApi.csproj", "{51B9BB4A-8B29-41C7-8989-A92AEF45AEF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JokesApi_BAL", "JokesApi_BAL\JokesApi_BAL.csproj", "{A31189F6-0C7C-46FC-BEDD-46EB218DEAEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JokesApi_DAL", "JokesApi_DAL\JokesApi_DAL.csproj", "{4AB3AFBB-EDAA-4376-BB4C-D0A7C3C1CC6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{51B9BB4A-8B29-41C7-8989-A92AEF45AEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B9BB4A-8B29-41C7-8989-A92AEF45AEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B9BB4A-8B29-41C7-8989-A92AEF45AEF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A31189F6-0C7C-46FC-BEDD-46EB218DEAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A31189F6-0C7C-46FC-BEDD-46EB218DEAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A31189F6-0C7C-46FC-BEDD-46EB218DEAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A31189F6-0C7C-46FC-BEDD-46EB218DEAEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AB3AFBB-EDAA-4376-BB4C-D0A7C3C1CC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AB3AFBB-EDAA-4376-BB4C-D0A7C3C1CC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AB3AFBB-EDAA-4376-BB4C-D0A7C3C1CC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AB3AFBB-EDAA-4376-BB4C-D0A7C3C1CC6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
