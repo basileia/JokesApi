@@ -12,7 +12,6 @@ namespace JokesApi_DAL.Repository
 
         public RepositoryCategory(AppDbContext context)
         {
-            Console.WriteLine("Je v repository?");
             _context = context;
         }
                        
@@ -25,19 +24,14 @@ namespace JokesApi_DAL.Repository
             return categories;
         }
 
-        //public async Task<ActionResult<Category>> GetCategory(int id)
-        //{
-        //    var category = await _context.Categories
-        //        .Include(_ => _.Jokes)
-        //        .Where(_ => _.Id == id)
-        //        .FirstOrDefaultAsync();
-
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return category;
-        //}
+        public async Task<Category> GetCategoryById(int id)
+        {
+            var category = await _context.Categories
+                .Include(_ => _.Jokes)
+                .Where(_ => _.Id == id)
+                .FirstOrDefaultAsync();
+            
+            return category;
+        }
     }
 }

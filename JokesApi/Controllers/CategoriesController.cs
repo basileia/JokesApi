@@ -13,7 +13,6 @@ namespace JokesApi.Controllers
         
         public CategoriesController(ServiceCategory serviceCategory)
         {
-            Console.WriteLine("categories controller");
             _serviceCategory = serviceCategory;
         }
 
@@ -24,22 +23,19 @@ namespace JokesApi.Controllers
             return await _serviceCategory.GetAllCategories();
         }
 
-        //// GET: api/Categories/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Category>> GetCategory(int id)
-        //{
-        //    var category = await _context.Categories
-        //        .Include(_ => _.Jokes)
-        //        .Where(_ => _.Id == id)
-        //        .FirstOrDefaultAsync();
-
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return category;
-        //}
+        // GET: api/Categories/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Category>> GetCategoryById(int id)
+        {
+            var category = await _serviceCategory.GetCategoryById(id);
+            
+            if (category == null)
+            {
+                return NotFound("Invalid Id");
+            }
+           
+            return category;
+        }
 
         //// PUT: api/Categories/5
         //[HttpPut("{id}")]
