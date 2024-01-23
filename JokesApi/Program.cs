@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
 builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
+builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
+builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

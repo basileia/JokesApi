@@ -20,10 +20,8 @@ namespace JokesApi_BAL.Services
         }
 
         public async Task<Category> GetCategoryById(int id)
-        {
-            var category = await _repositoryCategory.GetCategoryById(id);
-            
-            return category;
+        {            
+            return await _repositoryCategory.GetCategoryById(id);
         }
     }
 }

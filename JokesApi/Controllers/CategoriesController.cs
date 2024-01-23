@@ -23,6 +23,7 @@ namespace JokesApi.Controllers
             return await _serviceCategory.GetAllCategories();
         }
 
+        // lepší mít throw new exception v ServiceCategory nebo tady ActionResult (NotFound?) - business logic, nebo ještě jinak?
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategoryById(int id)

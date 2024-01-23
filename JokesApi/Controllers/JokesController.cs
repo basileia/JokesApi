@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using JokesApi_DAL.Data;
 using JokesApi_DAL.Entities;
+using JokesApi_BAL.Services;
 
 
 namespace JokesApi.Controllers
@@ -11,37 +12,34 @@ namespace JokesApi.Controllers
     [ApiController]
     public class JokesController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ServiceJoke _serviceJoke;
         //private readonly IMapper _mapper;
 
-        public JokesController(AppDbContext context)
+        public JokesController(ServiceJoke serviceJoke)
         {
-            _context = context;
+            _serviceJoke = serviceJoke;
         }
 
         // GET: api/Jokes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Joke>>> GetJokes()
         {
-            return await _context.Jokes.ToListAsync();
+            return await _serviceJoke.GetAllJokes();
         }
 
-        //        // GET: api/Jokes/5
-        //        [HttpGet("{id}")]
-        //        public async Task<ActionResult<Joke>> GetJoke(int id)
-        //        {            
-        //            var joke = await _context.Jokes
-        //                .Include(_ => _.Category)
-        //                .Where(_ => _.Id == id)
-        //                .FirstOrDefaultAsync();
+        // GET: api/Jokes/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Joke>> GetJokeById(int id)
+        {
+            var joke = await _serviceJoke.GetJokeById(id);
+            
+            if (joke == null)
+            {
+                return NotFound();
+            }
 
-        //            if (joke == null)
-        //            {
-        //                return NotFound();
-        //            }
-
-        //            return joke;
-        //        }
+            return joke;
+        }
 
         //        // PUT: api/Jokes/5
         //        [HttpPut("{id}")]
