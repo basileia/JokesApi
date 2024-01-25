@@ -7,6 +7,6 @@ namespace JokesApi_BAL.Models
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public ICollection<JokeModel>? Jokes { get; }
+        public ICollection<JokeModel>? Jokes { get; set; }
     }
 }
