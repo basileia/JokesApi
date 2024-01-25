@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
+using AutoMapper;
+using JokesApi_BAL.Models;
 
 
 namespace JokesApi.Controllers
@@ -11,36 +13,38 @@ namespace JokesApi.Controllers
     {
         private readonly ServiceCategory _serviceCategory;
         
+        
         public CategoriesController(ServiceCategory serviceCategory)
         {
             _serviceCategory = serviceCategory;
+            
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
+        public List<CategoryModel> GetAllCategories()
         {
-            return await _serviceCategory.GetAllCategories();
+            return _serviceCategory.GetAllCategories();
         }
 
-        // lepší mít throw new exception v ServiceCategory nebo tady ActionResult (NotFound?) - business logic, nebo ještě jinak?
+        // lepší mít throw new Exception() v ServiceCategory nebo tady ActionResult (NotFound?) - business logic, nebo ještě jinak?
         // GET: api/Categories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategoryById(int id)
+        public ActionResult<CategoryModel> GetCategoryById(int id)
         {
-            var category = await _serviceCategory.GetCategoryById(id);
-            
+            var category = _serviceCategory.GetCategoryById(id);
+
             if (category == null)
             {
                 return NotFound("Invalid Id");
             }
-           
+
             return category;
         }
 
         //// PUT: api/Categories/5
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCategory(int id, CategoryDto category)
+        //public async Task<ActionResult> PutCategory(int id, CategoryDto category)
         //{
         //    var updateCategory = _mapper.Map<Category>(category);
 

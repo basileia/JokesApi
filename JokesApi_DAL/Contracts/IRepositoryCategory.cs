@@ -5,7 +5,7 @@ namespace JokesApi_DAL.Contracts
 {
     public interface IRepositoryCategory
     {
-        Task<ActionResult<IEnumerable<Category>>> GetAllCategories();
-        Task<Category> GetCategoryById(int id);
+        List<Category> GetAllCategories();
+        Category GetCategoryById(int id);
     }
 }

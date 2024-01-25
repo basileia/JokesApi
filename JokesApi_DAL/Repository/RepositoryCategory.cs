@@ -1,7 +1,6 @@
 ﻿using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Data;
 using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_DAL.Repository
@@ -15,21 +14,21 @@ namespace JokesApi_DAL.Repository
             _context = context;
         }
                        
-        public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
+        public List<Category> GetAllCategories()
         {
-            var categories = await _context.Categories
+            var categories = _context.Categories
                 .Include(_ => _.Jokes)
-                .ToListAsync();
+                .ToList();
 
             return categories;
         }
 
-        public async Task<Category> GetCategoryById(int id)
+        public Category GetCategoryById(int id)
         {
-            var category = await _context.Categories
+            var category =_context.Categories
                 .Include(_ => _.Jokes)
                 .Where(_ => _.Id == id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
             
             return category;
         }
