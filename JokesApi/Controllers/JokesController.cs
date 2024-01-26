@@ -1,44 +1,41 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using AutoMapper;
-//using JokesApi_DAL.Entities;
-//using JokesApi_BAL.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using JokesApi_DAL.Entities;
+using JokesApi_BAL.Services;
+using JokesApi_BAL.Models;
 
 
-//namespace JokesApi.Controllers
-//{
-//    [Route("api/[controller]/[action]")]
-//    [ApiController]
-//    public class JokesController : ControllerBase
-//    {
-//        private readonly ServiceJoke _serviceJoke;
-//        private readonly IMapper _mapper;
+namespace JokesApi.Controllers
+{
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    public class JokesController : ControllerBase
+    {
+        private readonly ServiceJoke _serviceJoke;
+        
+        public JokesController(ServiceJoke serviceJoke)
+        {
+            _serviceJoke = serviceJoke;
+        }
 
-//        public JokesController(ServiceJoke serviceJoke, IMapper mapper)
-//        {
-//            _serviceJoke = serviceJoke;
-//            _mapper = mapper;
-//        }
+        [HttpGet]
+        public List<JokeModel> GetAllJokes()
+        {
+            return _serviceJoke.GetAllJokes();
+        }
 
-//        // GET: api/Jokes
-//        [HttpGet]
-//        public async Task<ActionResult<IEnumerable<Joke>>> GetJokes()
-//        {
-//            return await _serviceJoke.GetAllJokes();
-//        }
+        [HttpGet("{id}")]
+        public ActionResult<JokeModel> GetJokeById(int id)
+        {
+            var joke = _serviceJoke.GetJokeById(id);
 
-//        // GET: api/Jokes/5
-//        [HttpGet("{id}")]
-//        public async Task<ActionResult<Joke>> GetJokeById(int id)
-//        {
-//            var joke = await _serviceJoke.GetJokeById(id);
-            
-//            if (joke == null)
-//            {
-//                return NotFound();
-//            }
+            if (joke == null)
+            {
+                return NotFound("Invalid Id");
+            }
 
-//            return joke;
-//        }
+            return joke;
+        }
 
         //        // PUT: api/Jokes/5
         //        [HttpPut("{id}")]
@@ -124,5 +121,5 @@
         //        {
         //            return _context.Categories.Any(e => e.Id == id);
         //        }
-//    }
-//}
+    }
+}

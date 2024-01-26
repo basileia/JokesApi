@@ -11,24 +11,19 @@ namespace JokesApi_BAL.Services
     public class ServiceCategory
     {
         private readonly IRepositoryCategory _repositoryCategory;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
 
-        public ServiceCategory(IRepositoryCategory repositoryCategory)
+        public ServiceCategory(IRepositoryCategory repositoryCategory, IMapper mapper)
         {
             _repositoryCategory = repositoryCategory;
-            var _configCategory = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Category, CategoryModel>();
-                cfg.CreateMap<Joke, JokeModel>();
-            });
-            _mapper = new Mapper(_configCategory);
+            _mapper = mapper;            
         }
+
         public List<CategoryModel> GetAllCategories()
         {
             List<Category> categories = _repositoryCategory.GetAllCategories();
-
             List<CategoryModel> categoriesModel = _mapper.Map<List<Category>, List<CategoryModel>>(categories);
-            
+
             return categoriesModel;
         }
 
@@ -36,7 +31,39 @@ namespace JokesApi_BAL.Services
         {
             Category category = _repositoryCategory.GetCategoryById(id);
             CategoryModel categoryModel = _mapper.Map<Category, CategoryModel>(category);
+
             return categoryModel;
         }
+
+        public async Task<Category> AddCategory(CategoryModel categoryModel)
+        {
+            var category = _mapper.Map<Category>(categoryModel);
+            
+            if (_repositoryCategory.CategoryExists(category.Id))
+            {
+                throw new Exception("Category Id already exists.");
+            }
+
+            try
+            {
+                if (category == null)
+                {
+                    throw new ArgumentNullException(nameof(category));
+                }
+                else
+                {
+                    return await _repositoryCategory.CreateCategory(category);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+
+
+        }
+
+        
     }
 }

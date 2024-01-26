@@ -1,3 +1,5 @@
+using AutoMapper;
+using JokesApi_BAL.Extensions;
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Data;
@@ -11,14 +13,15 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 );
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(AppMapperProfile));
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
 builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
-//builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
-//builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
+builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
+builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
+builder.Services.AddScoped<IMapper, Mapper>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

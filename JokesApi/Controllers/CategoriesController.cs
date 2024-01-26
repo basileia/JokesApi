@@ -20,7 +20,6 @@ namespace JokesApi.Controllers
             
         }
 
-        // GET: api/Categories
         [HttpGet]
         public List<CategoryModel> GetAllCategories()
         {
@@ -28,7 +27,6 @@ namespace JokesApi.Controllers
         }
 
         // lepší mít throw new Exception() v ServiceCategory nebo tady ActionResult (NotFound?) - business logic, nebo ještě jinak?
-        // GET: api/Categories/5
         [HttpGet("{id}")]
         public ActionResult<CategoryModel> GetCategoryById(int id)
         {
@@ -75,21 +73,13 @@ namespace JokesApi.Controllers
         //}
 
 
-        //// POST: api/Categories
-        //[HttpPost]
-        //public async Task<ActionResult<Category>> PostCategory(CategoryDto category)
-        //{
-        //    if (CategoryExists(category.Id))
-        //    {
-        //        return BadRequest("Category Id already exists.");
-        //    }
+        [HttpPost]
+        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
+        {
+            await _serviceCategory.AddCategory(categoryModel);
 
-        //    var newCategory = _mapper.Map<Category>(category);
-        //    _context.Categories.Add(newCategory);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetCategory", new { id = newCategory.Id }, newCategory);
-        //}
+            return CreatedAtAction("GetCategoryById", new { id = categoryModel.Id }, categoryModel);
+        }
 
         //// DELETE: api/Categories/5
         //[HttpDelete("{id}")]
@@ -107,10 +97,7 @@ namespace JokesApi.Controllers
         //    return NoContent();
         //}
 
-        //private bool CategoryExists(int id)
-        //{
-        //    return _context.Categories.Any(e => e.Id == id);
-        //}
+        
 
 
     }
