@@ -63,8 +63,23 @@ namespace JokesApi_BAL.Services
                 joke.CreatedAt = DateTime.Now;
                 return await _repositoryJoke.CreateJoke(joke);
             }
+        }
 
+        public void UpdateJoke(JokeModel jokeModel)
+        {
+            if (jokeModel == null)
+            {
+                throw new ArgumentNullException(nameof(jokeModel));
+            }
 
+            if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
+            {
+                throw new Exception("Category not found.");
+            }
+
+            var joke = _mapper.Map<Joke>(jokeModel);
+            joke.CreatedAt = DateTime.Now;
+            _repositoryJoke.Update(joke);
 
         }
     }

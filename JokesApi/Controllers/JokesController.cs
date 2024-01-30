@@ -37,45 +37,28 @@ namespace JokesApi.Controllers
             return joke;
         }
 
-        //        // PUT: api/Jokes/5
-        //        [HttpPut("{id}")]
-        //        public async Task<IActionResult> PutJoke(int id, JokeDto joke)
-        //        {
-        //            if (id != joke.Id)
-        //            {
-        //                return BadRequest();
-        //            }
+        // PUT: api/Jokes/5
+        [HttpPut("{id}")]
+        public ActionResult PutJoke(int id, JokeModel jokeModel)
+        {
+            if (id != jokeModel.Id)
+            {
+                return BadRequest();
+            }
 
-        //            if (!CategoryExists(joke.CategoryId))
-        //            {
-        //                return NotFound("Category not found.");
-        //            }
+            var existingJoke = _serviceJoke.GetJokeById(id);
 
-        //            var updateJoke = _mapper.Map<Joke>(joke);
-        //            updateJoke.CreatedAt = DateTime.Now;                      
+            if (existingJoke == null)
+            {
+                return NotFound();
+            }
 
-        //            _context.Entry(updateJoke).State = EntityState.Modified;
+            jokeModel.Id = id;
+            _serviceJoke.UpdateJoke(jokeModel);
 
-        //            try
-        //            {
-        //                await _context.SaveChangesAsync();
-        //            }
-        //            catch (DbUpdateConcurrencyException)
-        //            {
-        //                if (!JokeExists(id))
-        //                {
-        //                    return NotFound();
-        //                }
-        //                else
-        //                {
-        //                    throw;
-        //                }
-        //            }
+            return Ok();
+        }
 
-        //            return NoContent();
-        //        }
-
-        // POST: api/Jokes
         [HttpPost]
         public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
         {

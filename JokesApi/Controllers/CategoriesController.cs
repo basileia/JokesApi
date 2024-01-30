@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
-using AutoMapper;
 using JokesApi_BAL.Models;
 
 

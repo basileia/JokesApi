@@ -29,6 +29,7 @@ namespace JokesApi_DAL.Repository
         {
             var joke = _context.Jokes
                 .Include(_ => _.Category)
+                .AsNoTracking()
                 .Where(_ => _.Id == id)
                 .FirstOrDefault();
 
@@ -59,6 +60,12 @@ namespace JokesApi_DAL.Repository
         public bool JokeExists(int id)
         {
             return _context.Jokes.Any(e => e.Id == id);
+        }
+
+        public void Update(Joke joke)
+        {
+            _context.Entry(joke).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }
