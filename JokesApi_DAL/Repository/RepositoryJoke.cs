@@ -34,5 +34,31 @@ namespace JokesApi_DAL.Repository
 
             return joke;
         }
+
+        public async Task<Joke> CreateJoke(Joke joke)
+        {
+            try
+            {
+                if (joke != null)
+                {
+                    var obj = _context.Add(joke);
+                    await _context.SaveChangesAsync();
+                    return obj.Entity;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool JokeExists(int id)
+        {
+            return _context.Jokes.Any(e => e.Id == id);
+        }
     }
 }

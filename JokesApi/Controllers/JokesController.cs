@@ -75,26 +75,13 @@ namespace JokesApi.Controllers
         //            return NoContent();
         //        }
 
-        //        // POST: api/Jokes
-        //        [HttpPost]
-        //        public async Task<ActionResult<Joke>> PostJoke(JokeDto joke)
-        //        {
-        //            if (JokeExists(joke.Id))
-        //            {
-        //                return BadRequest("Joke Id already exists.");
-        //            }
-
-        //            if (!CategoryExists(joke.CategoryId))
-        //            {
-        //                return NotFound("Category not found.");
-        //            }
-
-        //            var newJoke = _mapper.Map<Joke>(joke);         
-        //            newJoke.CreatedAt = DateTime.Now;
-        //            _context.Jokes.Add(newJoke);
-        //            await _context.SaveChangesAsync();
-        //            return CreatedAtAction("GetJoke", new { id = newJoke.Id }, newJoke);
-        //        }
+        // POST: api/Jokes
+        [HttpPost]
+        public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
+        {
+            await _serviceJoke.AddJoke(jokeModel);
+            return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
+        }
 
         //        // DELETE: api/Jokes/5
         //        [HttpDelete("{id}")]

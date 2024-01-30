@@ -12,5 +12,7 @@ namespace JokesApi_DAL.Contracts
     {
         List<Joke> GetAllJokes();
         Joke GetJokeById(int id);
+        Task<Joke> CreateJoke(Joke joke);
+        bool JokeExists(int id);
     }
 }

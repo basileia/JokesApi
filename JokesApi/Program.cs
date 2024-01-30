@@ -15,7 +15,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 );
 builder.Services.AddAutoMapper(typeof(AppMapperProfile));
 var Configuration = builder.Configuration;
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>  
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
 builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();

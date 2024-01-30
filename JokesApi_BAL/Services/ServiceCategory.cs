@@ -39,25 +39,18 @@ namespace JokesApi_BAL.Services
         {
             var category = _mapper.Map<Category>(categoryModel);
             
-            if (_repositoryCategory.CategoryExists(category.Id))
+             if (_repositoryCategory.CategoryExists(category.Id))
             {
                 throw new Exception("Category Id already exists.");
             }
 
-            try
+            if (category == null)
             {
-                if (category == null)
-                {
-                    throw new ArgumentNullException(nameof(category));
-                }
-                else
-                {
-                    return await _repositoryCategory.CreateCategory(category);
-                }
+                throw new ArgumentNullException(nameof(category));
             }
-            catch (Exception)
+            else
             {
-                throw;
+                return await _repositoryCategory.CreateCategory(category);
             }
 
 
