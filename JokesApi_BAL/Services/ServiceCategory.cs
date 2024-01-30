@@ -52,11 +52,20 @@ namespace JokesApi_BAL.Services
             {
                 return await _repositoryCategory.CreateCategory(category);
             }
+        }
 
+        public void UpdateCategory(CategoryModel categoryModel)
+        {
+            if (categoryModel == null)
+            {
+                throw new ArgumentNullException(nameof(categoryModel));
+            }
 
+            var category = _mapper.Map<Category>(categoryModel);
+            _repositoryCategory.Update(category);
 
         }
 
-        
+
     }
 }

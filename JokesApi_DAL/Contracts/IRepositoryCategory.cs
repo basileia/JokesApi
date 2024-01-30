@@ -9,5 +9,6 @@ namespace JokesApi_DAL.Contracts
         Category GetCategoryById(int id);
         Task<Category> CreateCategory(Category category);
         bool CategoryExists(int id);
+        void Update(Category category);
     }
 }

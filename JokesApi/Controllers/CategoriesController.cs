@@ -40,37 +40,26 @@ namespace JokesApi.Controllers
             return category;
         }
 
-        //// PUT: api/Categories/5
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> PutCategory(int id, CategoryDto category)
-        //{
-        //    var updateCategory = _mapper.Map<Category>(category);
+        [HttpPut("{id}")]
+        public ActionResult PutCategory(int id, CategoryModel categoryModel)
+        {
+            if (id != categoryModel.Id)
+            {
+                return BadRequest();
+            }            
+            
+            var existingCategory = _serviceCategory.GetCategoryById(id);
 
-        //    if (id != updateCategory.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (existingCategory == null)
+            {
+                return NotFound();
+            }
 
-        //    _context.Entry(updateCategory).State = EntityState.Modified;
+            categoryModel.Id = id;
+            _serviceCategory.UpdateCategory(categoryModel);
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!CategoryExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+            return Ok();
+        }
 
 
         [HttpPost]
