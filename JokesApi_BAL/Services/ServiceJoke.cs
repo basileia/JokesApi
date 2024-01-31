@@ -2,14 +2,6 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
-using JokesApi_DAL.Repository;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JokesApi_BAL.Services
 {
@@ -80,7 +72,11 @@ namespace JokesApi_BAL.Services
             var joke = _mapper.Map<Joke>(jokeModel);
             joke.CreatedAt = DateTime.Now;
             _repositoryJoke.Update(joke);
+        }
 
+        public void DeleteJoke(int id)
+        {
+            _repositoryJoke.Delete(id);
         }
     }
 }

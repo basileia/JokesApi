@@ -11,8 +11,7 @@ namespace JokesApi.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ServiceCategory _serviceCategory;
-        
-        
+                
         public CategoriesController(ServiceCategory serviceCategory)
         {
             _serviceCategory = serviceCategory;
@@ -20,7 +19,7 @@ namespace JokesApi.Controllers
         }
 
         [HttpGet]
-        public List<CategoryModel> GetAllCategories()
+        public ActionResult<List<CategoryModel>> GetAllCategories()
         {
             return _serviceCategory.GetAllCategories();
         }
@@ -69,23 +68,22 @@ namespace JokesApi.Controllers
             return CreatedAtAction("GetCategoryById", new { id = categoryModel.Id }, categoryModel);
         }
 
-        //// DELETE: api/Categories/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteCategory(int id)
-        //{
-        //    var category = await _context.Categories.FindAsync(id);
-        //    if (category == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCategory(int id)
+        {
+            var existingCategory = _serviceCategory.GetCategoryById(id);
 
-        //    _context.Categories.Remove(category);
-        //    await _context.SaveChangesAsync();
+            if (existingCategory == null)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            _serviceCategory.DeleteCategory(id);
 
-        
+            return Ok();
+        }
+
+
 
 
     }

@@ -10,7 +10,6 @@ namespace JokesApi_BAL.Extensions
         {
             CreateMap<Category, CategoryModel>().ReverseMap();
             CreateMap<Joke, JokeModel>().ReverseMap();
-
         }
     }
 }

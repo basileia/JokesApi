@@ -1,13 +1,7 @@
 ﻿using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Data;
 using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JokesApi_DAL.Repository
 {
@@ -38,34 +32,37 @@ namespace JokesApi_DAL.Repository
 
         public async Task<Joke> CreateJoke(Joke joke)
         {
-            try
+            if (joke != null)
             {
-                if (joke != null)
-                {
-                    var obj = _context.Add(joke);
-                    await _context.SaveChangesAsync();
-                    return obj.Entity;
-                }
-                else
-                {
-                    return null;
-                }
+                var obj = _context.Add(joke);
+                await _context.SaveChangesAsync();
+                return obj.Entity;
             }
-            catch (Exception)
+            else
             {
-                throw;
+                return null;
             }
-        }
-
-        public bool JokeExists(int id)
-        {
-            return _context.Jokes.Any(e => e.Id == id);
         }
 
         public void Update(Joke joke)
         {
             _context.Entry(joke).State = EntityState.Modified;
             _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var joke = _context.Jokes.Find(id);
+            if (joke != null)
+            {
+                _context.Jokes.Remove(joke);
+                _context.SaveChanges();
+            }
+        }
+
+        public bool JokeExists(int id)
+        {
+            return _context.Jokes.Any(e => e.Id == id);
         }
     }
 }

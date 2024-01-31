@@ -1,5 +1,4 @@
-﻿using JokesApi_DAL.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace JokesApi_BAL.Models
 {
@@ -10,7 +9,5 @@ namespace JokesApi_BAL.Models
         public required string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public required int CategoryId { get; set; }
-        
-
     }
 }

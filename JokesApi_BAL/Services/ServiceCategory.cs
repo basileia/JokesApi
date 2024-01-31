@@ -3,8 +3,6 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_BAL.Services
 {
@@ -63,9 +61,11 @@ namespace JokesApi_BAL.Services
 
             var category = _mapper.Map<Category>(categoryModel);
             _repositoryCategory.Update(category);
-
         }
 
-
+        public void DeleteCategory(int id)
+        {
+            _repositoryCategory.Delete(id);
+        }
     }
 }

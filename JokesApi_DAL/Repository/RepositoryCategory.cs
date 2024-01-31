@@ -1,7 +1,6 @@
 ﻿using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Data;
 using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_DAL.Repository
@@ -37,22 +36,15 @@ namespace JokesApi_DAL.Repository
 
         public async Task<Category> CreateCategory(Category category)
         {
-            try
+            if (category != null)
             {
-                if (category != null)
-                {
-                    var obj = _context.Add(category);
-                    await _context.SaveChangesAsync();
-                    return obj.Entity;
-                }
-                else
-                {
-                    return null;
-                }
+                var obj = _context.Add(category);
+                await _context.SaveChangesAsync();
+                return obj.Entity;
             }
-            catch (Exception)
+            else
             {
-                throw;
+                return null;
             }
         }
 
@@ -61,6 +53,17 @@ namespace JokesApi_DAL.Repository
             _context.Entry(category).State = EntityState.Modified;
             _context.SaveChanges();
         }
+
+        public void Delete(int id)
+        {
+            var category = _context.Categories.Find(id);
+            if (category != null)
+            {
+                _context.Categories.Remove(category);
+                _context.SaveChanges();
+            }
+        }
+
         public bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);

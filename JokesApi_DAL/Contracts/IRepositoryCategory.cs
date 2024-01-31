@@ -1,5 +1,4 @@
 ﻿using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
 
 namespace JokesApi_DAL.Contracts
 {
@@ -10,5 +9,6 @@ namespace JokesApi_DAL.Contracts
         Task<Category> CreateCategory(Category category);
         bool CategoryExists(int id);
         void Update(Category category);
+        void Delete(int id);
     }
 }
