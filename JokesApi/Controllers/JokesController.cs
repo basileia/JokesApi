@@ -30,7 +30,7 @@ namespace JokesApi.Controllers
 
             if (joke == null)
             {
-                return NotFound("Invalid Id");
+                return BadRequest("Invalid Id");
             }
 
             return joke;
@@ -42,20 +42,20 @@ namespace JokesApi.Controllers
         {
             if (id != jokeModel.Id)
             {
-                return BadRequest();
+                return BadRequest("The id in the path must be the same as the joke id.");
             }
 
             var existingJoke = _serviceJoke.GetJokeById(id);
 
             if (existingJoke == null)
             {
-                return NotFound();
+                return BadRequest("Joke not found");
             }
 
             jokeModel.Id = id;
             _serviceJoke.UpdateJoke(jokeModel);
 
-            return Ok();
+            return Ok(jokeModel);
         }
 
         [HttpPost]
@@ -73,12 +73,12 @@ namespace JokesApi.Controllers
             
             if (existingJoke == null)
             {
-                return NotFound();
+                return BadRequest("Joke not found");
             }
 
             _serviceJoke.DeleteJoke(id);
 
-            return Ok();         
+            return Ok("Joke has been deleted.");         
         }               
     }
 }

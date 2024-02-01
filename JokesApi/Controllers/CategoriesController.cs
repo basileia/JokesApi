@@ -2,6 +2,7 @@
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
 using JokesApi_BAL.Models;
+using Newtonsoft.Json;
 
 
 namespace JokesApi.Controllers
@@ -32,7 +33,7 @@ namespace JokesApi.Controllers
 
             if (category == null)
             {
-                return NotFound("Invalid Id");
+                return BadRequest("Invalid Id.");
             }
 
             return category;
@@ -43,20 +44,20 @@ namespace JokesApi.Controllers
         {
             if (id != categoryModel.Id)
             {
-                return BadRequest();
+                return BadRequest("The id in the path must be the same as the category id.");
             }            
             
             var existingCategory = _serviceCategory.GetCategoryById(id);
 
             if (existingCategory == null)
             {
-                return NotFound();
+                return BadRequest("Category not found");
             }
 
             categoryModel.Id = id;
             _serviceCategory.UpdateCategory(categoryModel);
 
-            return Ok();
+            return Ok(categoryModel);
         }
 
 
@@ -65,7 +66,7 @@ namespace JokesApi.Controllers
         {
             await _serviceCategory.AddCategory(categoryModel);
 
-            return CreatedAtAction("GetCategoryById", new { id = categoryModel.Id }, categoryModel);
+            return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
         }
 
         [HttpDelete("{id}")]
@@ -75,16 +76,12 @@ namespace JokesApi.Controllers
 
             if (existingCategory == null)
             {
-                return NotFound();
+                return BadRequest("Category not found");
             }
 
             _serviceCategory.DeleteCategory(id);
 
-            return Ok();
+            return Ok("Category has been deleted");
         }
-
-
-
-
     }
 }
