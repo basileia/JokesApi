@@ -28,6 +28,12 @@ namespace JokesApi_BAL.Services
         public JokeModel GetJokeById(int id)
         {
             var joke = _repositoryJoke.GetJokeById(id);
+            
+            if (joke == null)
+            {
+                throw new Exception("Invalid Id");
+            }
+
             var jokeModel = _mapper.Map<JokeModel>(joke);
             return jokeModel;
         }
@@ -46,22 +52,23 @@ namespace JokesApi_BAL.Services
                 throw new Exception ("Category not found.");
             }
 
-            if (joke == null)
-            {
-                throw new ArgumentNullException(nameof(joke));
-            }
-            else
-            {
-                joke.CreatedAt = DateTime.Now;
-                return await _repositoryJoke.CreateJoke(joke);
-            }
+            joke.CreatedAt = DateTime.Now;
+            return await _repositoryJoke.CreateJoke(joke);
+          
         }
 
-        public void UpdateJoke(JokeModel jokeModel)
+        public void UpdateJoke(int id, JokeModel jokeModel)
         {
-            if (jokeModel == null)
+            if (id != jokeModel.Id)
             {
-                throw new ArgumentNullException(nameof(jokeModel));
+                throw new Exception("The id in the path must be the same as the joke id.");
+            }
+
+            var existingJoke = GetJokeById(id);
+
+            if (existingJoke == null)
+            {
+                throw new Exception("Joke not found");
             }
 
             if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
@@ -76,6 +83,13 @@ namespace JokesApi_BAL.Services
 
         public void DeleteJoke(int id)
         {
+            var existingJoke = GetJokeById(id);
+
+            if (existingJoke == null)
+            {
+                throw new Exception("Joke not found");
+            }
+
             _repositoryJoke.Delete(id);
         }
     }

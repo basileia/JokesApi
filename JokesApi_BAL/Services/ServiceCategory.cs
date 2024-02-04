@@ -28,6 +28,12 @@ namespace JokesApi_BAL.Services
         public CategoryModel GetCategoryById(int id)
         {
             Category category = _repositoryCategory.GetCategoryById(id);
+            
+            if (category == null)
+            {
+                throw new Exception("Category not found");
+            }
+            
             CategoryModel categoryModel = _mapper.Map<Category, CategoryModel>(category);
 
             return categoryModel;
@@ -35,28 +41,28 @@ namespace JokesApi_BAL.Services
 
         public async Task<Category> AddCategory(CategoryModel categoryModel)
         {
-            var category = _mapper.Map<Category>(categoryModel);
-            
-             if (_repositoryCategory.CategoryExists(category.Id))
-            {
-                throw new Exception("Category Id already exists.");
-            }
+            if (_repositoryCategory.CategoryExists(categoryModel.Id))
+             {
+                throw new Exception("Category already exists.");
+             }
 
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-            else
-            {
-                return await _repositoryCategory.CreateCategory(category);
-            }
+            var category = _mapper.Map<Category>(categoryModel);
+
+            return await _repositoryCategory.CreateCategory(category);            
         }
 
-        public void UpdateCategory(CategoryModel categoryModel)
+        public void UpdateCategory(int id, CategoryModel categoryModel)
         {
-            if (categoryModel == null)
+            if (id != categoryModel.Id)
             {
-                throw new ArgumentNullException(nameof(categoryModel));
+                throw new Exception("The id in the path must be the same as the category id.");
+            }
+
+            var existingCategory = GetCategoryById(id);
+
+            if (existingCategory == null)
+            {
+                throw new Exception("Category not found");
             }
 
             var category = _mapper.Map<Category>(categoryModel);
@@ -65,6 +71,13 @@ namespace JokesApi_BAL.Services
 
         public void DeleteCategory(int id)
         {
+            var existingCategory = GetCategoryById(id);
+
+            if (existingCategory == null)
+            {
+                throw new Exception("Category not found");
+            }
+
             _repositoryCategory.Delete(id);
         }
     }

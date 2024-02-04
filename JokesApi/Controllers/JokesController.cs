@@ -26,59 +26,56 @@ namespace JokesApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<JokeModel> GetJokeById(int id)
         {
-            var joke = _serviceJoke.GetJokeById(id);
-
-            if (joke == null)
+            try
             {
-                return BadRequest("Invalid Id");
+                var joke = _serviceJoke.GetJokeById(id);
+                return joke;
             }
-
-            return joke;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }           
         }
 
-        // PUT: api/Jokes/5
         [HttpPut("{id}")]
         public ActionResult PutJoke(int id, JokeModel jokeModel)
         {
-            if (id != jokeModel.Id)
+            try
             {
-                return BadRequest("The id in the path must be the same as the joke id.");
+                _serviceJoke.UpdateJoke(id, jokeModel);
+                return Ok(jokeModel);
             }
-
-            var existingJoke = _serviceJoke.GetJokeById(id);
-
-            if (existingJoke == null)
+            catch (Exception ex)
             {
-                return BadRequest("Joke not found");
-            }
-
-            jokeModel.Id = id;
-            _serviceJoke.UpdateJoke(jokeModel);
-
-            return Ok(jokeModel);
+                return BadRequest(ex.Message);
+            }           
         }
 
         [HttpPost]
         public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
         {
-            await _serviceJoke.AddJoke(jokeModel);
-            return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
+            try
+            {
+                await _serviceJoke.AddJoke(jokeModel);
+                return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
         }
 
-        // DELETE: api/Jokes/5
-        [HttpDelete("{id}")]
         public ActionResult DeleteJoke(int id)
         {
-            var existingJoke = _serviceJoke.GetJokeById(id);
-            
-            if (existingJoke == null)
+            try
             {
-                return BadRequest("Joke not found");
+                _serviceJoke.DeleteJoke(id);
+                return Ok("Joke has been deleted.");
             }
-
-            _serviceJoke.DeleteJoke(id);
-
-            return Ok("Joke has been deleted.");         
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }             
         }               
     }
 }

@@ -2,7 +2,6 @@
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
 using JokesApi_BAL.Models;
-using Newtonsoft.Json;
 
 
 namespace JokesApi.Controllers
@@ -25,63 +24,62 @@ namespace JokesApi.Controllers
             return _serviceCategory.GetAllCategories();
         }
 
-        // lepší mít throw new Exception() v ServiceCategory nebo tady ActionResult (NotFound?) - business logic, nebo ještě jinak?
+       
         [HttpGet("{id}")]
         public ActionResult<CategoryModel> GetCategoryById(int id)
         {
-            var category = _serviceCategory.GetCategoryById(id);
-
-            if (category == null)
+            try 
             {
-                return BadRequest("Invalid Id.");
+                var category = _serviceCategory.GetCategoryById(id);
+                return category;
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }           
+        }
 
-            return category;
+        [HttpPost]
+        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
+        {
+            try
+            {
+                await _serviceCategory.AddCategory(categoryModel);
+                return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
         }
 
         [HttpPut("{id}")]
         public ActionResult PutCategory(int id, CategoryModel categoryModel)
         {
-            if (id != categoryModel.Id)
+            try
             {
-                return BadRequest("The id in the path must be the same as the category id.");
-            }            
-            
-            var existingCategory = _serviceCategory.GetCategoryById(id);
-
-            if (existingCategory == null)
-            {
-                return BadRequest("Category not found");
+                _serviceCategory.UpdateCategory(id, categoryModel);
+                return Ok(categoryModel);
             }
-
-            categoryModel.Id = id;
-            _serviceCategory.UpdateCategory(categoryModel);
-
-            return Ok(categoryModel);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }               
         }
-
-
-        [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
-        {
-            await _serviceCategory.AddCategory(categoryModel);
-
-            return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
-        }
+                
 
         [HttpDelete("{id}")]
         public ActionResult DeleteCategory(int id)
         {
-            var existingCategory = _serviceCategory.GetCategoryById(id);
-
-            if (existingCategory == null)
+            try
             {
-                return BadRequest("Category not found");
+                _serviceCategory.DeleteCategory(id);
+                return Ok("Category has been deleted");
             }
-
-            _serviceCategory.DeleteCategory(id);
-
-            return Ok("Category has been deleted");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
         }
     }
 }
