@@ -42,7 +42,6 @@ namespace JokesApi_BAL.Extensions
                 _ => (int)HttpStatusCode.InternalServerError
             };
 
-
             await context.Response.WriteAsync(new ErrorDetails()
             {
                 StatusCode = statusCode,

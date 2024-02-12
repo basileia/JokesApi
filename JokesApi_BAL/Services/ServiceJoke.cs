@@ -45,12 +45,12 @@ namespace JokesApi_BAL.Services
 
             if (_repositoryJoke.JokeExists(joke.Id))
             {
-                throw new Exception("Joke Id already exists.");
+                throw new BadHttpRequestException("Joke Id already exists.");
             }
 
             if (!_repositoryCategory.CategoryExists(joke.CategoryId))
             {
-                throw new Exception ("Category not found.");
+                throw new BadHttpRequestException("Category not found.");
             }
 
             joke.CreatedAt = DateTime.Now;
@@ -62,19 +62,19 @@ namespace JokesApi_BAL.Services
         {
             if (id != jokeModel.Id)
             {
-                throw new Exception("The id in the path must be the same as the joke id.");
+                throw new BadHttpRequestException("The id in the path must be the same as the joke id.");
             }
 
             var existingJoke = GetJokeById(id);
 
             if (existingJoke == null)
             {
-                throw new Exception("Joke not found");
+                throw new BadHttpRequestException("Joke not found");
             }
 
             if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
             {
-                throw new Exception("Category not found.");
+                throw new BadHttpRequestException("Category not found.");
             }
 
             var joke = _mapper.Map<Joke>(jokeModel);

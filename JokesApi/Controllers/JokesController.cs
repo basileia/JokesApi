@@ -26,43 +26,22 @@ namespace JokesApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<JokeModel> GetJokeById(int id)
         {
-            try
-            {
-                var joke = _serviceJoke.GetJokeById(id);
-                return joke;
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }           
+            var joke = _serviceJoke.GetJokeById(id);
+            return joke;
         }
 
         [HttpPut("{id}")]
         public ActionResult PutJoke(int id, JokeModel jokeModel)
         {
-            try
-            {
-                _serviceJoke.UpdateJoke(id, jokeModel);
-                return Ok(jokeModel);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }           
+            _serviceJoke.UpdateJoke(id, jokeModel);
+            return Ok(jokeModel);
         }
 
         [HttpPost]
         public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
         {
-            try
-            {
-                await _serviceJoke.AddJoke(jokeModel);
-                return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }            
+            await _serviceJoke.AddJoke(jokeModel);
+            return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
         }
 
         [HttpDelete]
