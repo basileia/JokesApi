@@ -9,10 +9,12 @@ namespace JokesApi_BAL.Extensions
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionMiddleware> _logger;
         
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
            
         }
         public async Task InvokeAsync(HttpContext httpContext)
@@ -23,12 +25,12 @@ namespace JokesApi_BAL.Extensions
             }
             catch (BadHttpRequestException badReqEx)
             {
-                //_logger.LogError($"A new bad http request exception has been thrown: {badReqEx}");
+                _logger.LogError("A new bad http request exception has been thrown: {Exception}", badReqEx);
                 await HandleExceptionAsync(httpContext, badReqEx);
             }
             catch (Exception ex)
             {
-                //_logger.LogError($"Exception occurred: {ex}");
+                _logger.LogError("Exception occurred: {Exception}", ex);
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

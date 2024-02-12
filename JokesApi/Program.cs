@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -32,10 +35,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
-
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
 
 if (app.Environment.IsDevelopment())
 {
