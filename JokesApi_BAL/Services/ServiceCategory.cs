@@ -3,6 +3,7 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace JokesApi_BAL.Services
 {
@@ -31,7 +32,7 @@ namespace JokesApi_BAL.Services
             
             if (category == null)
             {
-                throw new Exception("Category not found");
+                throw new BadHttpRequestException("Category not found");
             }
             
             CategoryModel categoryModel = _mapper.Map<Category, CategoryModel>(category);
@@ -43,7 +44,7 @@ namespace JokesApi_BAL.Services
         {
             if (_repositoryCategory.CategoryExists(categoryModel.Id))
              {
-                throw new Exception("Category already exists.");
+                throw new BadHttpRequestException("Category already exists.");
              }
 
             var category = _mapper.Map<Category>(categoryModel);
@@ -55,14 +56,14 @@ namespace JokesApi_BAL.Services
         {
             if (id != categoryModel.Id)
             {
-                throw new Exception("The id in the path must be the same as the category id.");
+                throw new BadHttpRequestException("The id in the path must be the same as the category id.");
             }
 
             var existingCategory = GetCategoryById(id);
 
             if (existingCategory == null)
             {
-                throw new Exception("Category not found");
+                throw new BadHttpRequestException("Category not found");
             }
 
             var category = _mapper.Map<Category>(categoryModel);
@@ -75,7 +76,7 @@ namespace JokesApi_BAL.Services
 
             if (existingCategory == null)
             {
-                throw new Exception("Category not found");
+                throw new BadHttpRequestException("Category not found");
             }
 
             _repositoryCategory.Delete(id);

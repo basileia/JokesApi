@@ -65,17 +65,11 @@ namespace JokesApi.Controllers
             }            
         }
 
+        [HttpDelete]
         public ActionResult DeleteJoke(int id)
         {
-            try
-            {
-                _serviceJoke.DeleteJoke(id);
-                return Ok("Joke has been deleted.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }             
+            _serviceJoke.DeleteJoke(id);
+            return Ok("Joke has been deleted.");   
         }               
     }
 }

@@ -2,6 +2,7 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace JokesApi_BAL.Services
 {
@@ -31,7 +32,7 @@ namespace JokesApi_BAL.Services
             
             if (joke == null)
             {
-                throw new Exception("Invalid Id");
+                throw new BadHttpRequestException("Invalid Id");
             }
 
             var jokeModel = _mapper.Map<JokeModel>(joke);
@@ -87,7 +88,7 @@ namespace JokesApi_BAL.Services
 
             if (existingJoke == null)
             {
-                throw new Exception("Joke not found");
+                throw new BadHttpRequestException("Joke not found");
             }
 
             _repositoryJoke.Delete(id);

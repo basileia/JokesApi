@@ -17,25 +17,37 @@ builder.Services.AddAutoMapper(typeof(AppMapperProfile));
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>  
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
+
 builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
 builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
 builder.Services.AddScoped<IMapper, Mapper>();
+
+//builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+//builder.Services.AddProblemDetails();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-//middleware
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
+
+//app.UseExceptionHandler();
 
 app.UseAuthorization();
 

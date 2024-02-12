@@ -14,8 +14,7 @@ namespace JokesApi.Controllers
                 
         public CategoriesController(ServiceCategory serviceCategory)
         {
-            _serviceCategory = serviceCategory;
-            
+            _serviceCategory = serviceCategory;            
         }
 
         [HttpGet]
@@ -28,58 +27,30 @@ namespace JokesApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<CategoryModel> GetCategoryById(int id)
         {
-            try 
-            {
-                var category = _serviceCategory.GetCategoryById(id);
-                return category;
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }           
+            var category = _serviceCategory.GetCategoryById(id);
+            return category;
         }
 
         [HttpPost]
         public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
         {
-            try
-            {
-                await _serviceCategory.AddCategory(categoryModel);
-                return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }            
+            await _serviceCategory.AddCategory(categoryModel);
+            return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
         }
 
         [HttpPut("{id}")]
         public ActionResult PutCategory(int id, CategoryModel categoryModel)
         {
-            try
-            {
-                _serviceCategory.UpdateCategory(id, categoryModel);
-                return Ok(categoryModel);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }               
+            _serviceCategory.UpdateCategory(id, categoryModel);
+            return Ok(categoryModel);
         }
                 
 
         [HttpDelete("{id}")]
         public ActionResult DeleteCategory(int id)
         {
-            try
-            {
-                _serviceCategory.DeleteCategory(id);
-                return Ok("Category has been deleted");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }            
+            _serviceCategory.DeleteCategory(id);
+            return Ok("Category has been deleted");
         }
     }
 }
