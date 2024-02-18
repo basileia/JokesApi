@@ -8,9 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -27,9 +24,6 @@ builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
 builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
 builder.Services.AddScoped<IMapper, Mapper>();
 
-//builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-//builder.Services.AddProblemDetails();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -43,11 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
-
-//app.UseExceptionHandler();
 
 app.UseAuthorization();
 
