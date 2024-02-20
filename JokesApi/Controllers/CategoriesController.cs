@@ -25,10 +25,18 @@ namespace JokesApi.Controllers
 
        
         [HttpGet("{id}")]
-        public ActionResult<CategoryModel> GetCategoryById(int id)
+        public ActionResult<Result<CategoryModel, Error>> GetCategoryById(int id)
         {
-            var category = _serviceCategory.GetCategoryById(id);
-            return category;
+            var categoryResult = _serviceCategory.GetCategoryById(id);
+            
+            var result = categoryResult.Match(resultValue => resultValue, error => error);
+
+            if (result.Error != null)
+            {
+                return NotFound(result.Error.Description);
+            }
+            else
+                return Ok(result.Value);
         }
 
         [HttpPost]
