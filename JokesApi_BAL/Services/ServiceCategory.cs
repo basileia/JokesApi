@@ -3,7 +3,6 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Http;
 
 namespace JokesApi_BAL.Services
 {
@@ -40,11 +39,11 @@ namespace JokesApi_BAL.Services
             return categoryModel;
         }
 
-        public async Task<Category> AddCategory(CategoryModel categoryModel)
+        public async Task<Result<Category, Error>> AddCategory(CategoryModel categoryModel)
         {
             if (_repositoryCategory.CategoryExists(categoryModel.Id))
              {
-                throw new BadHttpRequestException("Category already exists.");
+                return CategoryErrors.CategoryExists;
              }
 
             var category = _mapper.Map<Category>(categoryModel);
@@ -52,34 +51,31 @@ namespace JokesApi_BAL.Services
             return await _repositoryCategory.CreateCategory(category);            
         }
 
-        public void UpdateCategory(int id, CategoryModel categoryModel)
+        public Result<CategoryModel, Error> UpdateCategory(int id, string name)
         {
-            if (id != categoryModel.Id)
-            {
-                throw new BadHttpRequestException("The id in the path must be the same as the category id.");
-            }
-
             var existingCategory = GetCategoryById(id);
 
-            if (existingCategory == null)
+            if (existingCategory.Error != null)
             {
-                throw new BadHttpRequestException("Category not found");
+                return CategoryErrors.CategoryNotFound;
             }
 
-            var category = _mapper.Map<Category>(categoryModel);
-            _repositoryCategory.Update(category);
+            _repositoryCategory.Update(id, name);
+
+            return GetCategoryById(id);
         }
 
-        public void DeleteCategory(int id)
+        public Result<Category, Error> DeleteCategory(int id)
         {
             var existingCategory = GetCategoryById(id);
 
-            if (existingCategory == null)
+            if (existingCategory.Error != null)
             {
-                throw new BadHttpRequestException("Category not found");
+                return CategoryErrors.CategoryNotFound;
             }
 
             _repositoryCategory.Delete(id);
+            return Error.None;
         }
     }
 }

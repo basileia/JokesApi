@@ -48,9 +48,12 @@ namespace JokesApi_DAL.Repository
             }
         }
 
-        public void Update(Category category)
+        public void Update(int id, string name)
         {
-            _context.Entry(category).State = EntityState.Modified;
+            _context.Categories
+                .Where(_ => _.Id == id)
+                .ExecuteUpdate(_ => _.SetProperty(u => u.Name, name));
+
             _context.SaveChanges();
         }
 

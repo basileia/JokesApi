@@ -28,37 +28,51 @@ namespace JokesApi.Controllers
         public ActionResult<Result<CategoryModel, Error>> GetCategoryById(int id)
         {
             var categoryResult = _serviceCategory.GetCategoryById(id);
-            
-            var result = categoryResult.Match(resultValue => resultValue, error => error);
 
-            if (result.Error != null)
+            if (categoryResult.Error != null)
             {
-                return NotFound(result.Error.Description);
+                return NotFound(categoryResult.Error.Description);
             }
             else
-                return Ok(result.Value);
+                return Ok(categoryResult.Value);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
+        public async Task<ActionResult<Result<Category, Error>>> CreateCategory(CategoryModel categoryModel)
         {
-            await _serviceCategory.AddCategory(categoryModel);
-            return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
+            var categoryResult = await _serviceCategory.AddCategory(categoryModel);
+
+            if (categoryResult.Error != null) {
+                return BadRequest(categoryResult.Error.Description);
+            }
+            else                
+                return CreatedAtAction("GetCategoryById", new { categoryResult.Value.Id }, categoryResult.Value);
         }
 
         [HttpPut("{id}")]
-        public ActionResult PutCategory(int id, CategoryModel categoryModel)
+        public ActionResult PutCategory(int id, string name)
         {
-            _serviceCategory.UpdateCategory(id, categoryModel);
-            return Ok(categoryModel);
+            var result = _serviceCategory.UpdateCategory(id, name);
+
+            if (result.Error != null)
+            {
+                return BadRequest(result.Error.Description);
+            }
+            return Ok(result.Value);
         }
                 
 
         [HttpDelete("{id}")]
         public ActionResult DeleteCategory(int id)
         {
-            _serviceCategory.DeleteCategory(id);
-            return Ok("Category has been deleted");
+            var result = _serviceCategory.DeleteCategory(id);
+
+            if (result.Error == Error.None)
+            {
+                return Ok("Category has been deleted");
+            }
+            else
+                return NotFound(result.Error.Description);            
         }
     }
 }
