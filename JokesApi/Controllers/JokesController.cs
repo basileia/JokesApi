@@ -26,29 +26,49 @@ namespace JokesApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<JokeModel> GetJokeById(int id)
         {
-            var joke = _serviceJoke.GetJokeById(id);
-            return joke;
-        }
+            var jokeResult = _serviceJoke.GetJokeById(id);
 
-        [HttpPut("{id}")]
-        public ActionResult PutJoke(int id, JokeModel jokeModel)
-        {
-            _serviceJoke.UpdateJoke(id, jokeModel);
-            return Ok(jokeModel);
+            if (jokeResult.Error != null)
+            {
+                return NotFound(jokeResult.Error.Description);
+            }
+            return Ok(jokeResult.Value);
         }
 
         [HttpPost]
         public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
         {
-            await _serviceJoke.AddJoke(jokeModel);
-            return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
+            var result = await _serviceJoke.AddJoke(jokeModel);
+
+            if (result.Error != null)
+            {
+                return BadRequest(result.Error.Description);
+            }
+            return CreatedAtAction("GetJokeById", new { id = result.Value.Id }, result.Value);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult PutJoke(int id, JokeModel jokeModel)
+        {
+            var result = _serviceJoke.UpdateJoke(id, jokeModel);
+
+            if (result.Error != null)
+            {
+                return BadRequest(result.Error.Description);
+            }
+            return Ok(jokeModel);
         }
 
         [HttpDelete]
         public ActionResult DeleteJoke(int id)
         {
-            _serviceJoke.DeleteJoke(id);
-            return Ok("Joke has been deleted.");   
+            var result = _serviceJoke.DeleteJoke(id);
+
+            if (result.Error == Error.None)
+            {
+                return Ok("Joke has been deleted.");
+            }
+            return BadRequest(result.Error.Description);              
         }               
     }
 }

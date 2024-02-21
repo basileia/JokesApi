@@ -33,8 +33,7 @@ namespace JokesApi.Controllers
             {
                 return NotFound(categoryResult.Error.Description);
             }
-            else
-                return Ok(categoryResult.Value);
+            return Ok(categoryResult.Value);
         }
 
         [HttpPost]
@@ -45,8 +44,7 @@ namespace JokesApi.Controllers
             if (categoryResult.Error != null) {
                 return BadRequest(categoryResult.Error.Description);
             }
-            else                
-                return CreatedAtAction("GetCategoryById", new { categoryResult.Value.Id }, categoryResult.Value);
+            return CreatedAtAction("GetCategoryById", new { id = categoryResult.Value.Id }, categoryResult.Value);
         }
 
         [HttpPut("{id}")]
@@ -71,8 +69,7 @@ namespace JokesApi.Controllers
             {
                 return Ok("Category has been deleted");
             }
-            else
-                return NotFound(result.Error.Description);            
+            return BadRequest(result.Error.Description);            
         }
     }
 }
