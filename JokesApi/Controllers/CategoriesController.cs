@@ -2,13 +2,14 @@
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
 using JokesApi_BAL.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 
 namespace JokesApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseController
     {
         private readonly ServiceCategory _serviceCategory;
                 
@@ -23,42 +24,23 @@ namespace JokesApi.Controllers
             return _serviceCategory.GetAllCategories();
         }
 
-       
         [HttpGet("{id}")]
-        public ActionResult<Result<CategoryModel, Error>> GetCategoryById(int id)
+        public ActionResult<CategoryModel> GetCategoryById(int id)
         {
-            var categoryResult = _serviceCategory.GetCategoryById(id);
-
-            if (categoryResult.Error != null)
-            {
-                return NotFound(categoryResult.Error.Description);
-            }
-            return Ok(categoryResult.Value);
+            return GetResponse(_serviceCategory.GetCategoryById(id));
         }
-
+ 
         [HttpPost]
-        public async Task<ActionResult<Result<Category, Error>>> CreateCategory(CategoryModel categoryModel)
-        {
-            var categoryResult = await _serviceCategory.AddCategory(categoryModel);
-
-            if (categoryResult.Error != null) {
-                return BadRequest(categoryResult.Error.Description);
-            }
-            return CreatedAtAction("GetCategoryById", new { id = categoryResult.Value.Id }, categoryResult.Value);
+        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
+        {         
+            return GetResponse(await _serviceCategory.AddCategory(categoryModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult PutCategory(int id, string name)
+        public ActionResult<CategoryModel> PutCategory(int id, string name)
         {
-            var result = _serviceCategory.UpdateCategory(id, name);
-
-            if (result.Error != null)
-            {
-                return BadRequest(result.Error.Description);
-            }
-            return Ok(result.Value);
-        }
-                
+            return GetResponse(_serviceCategory.UpdateCategory(id, name));
+        }               
 
         [HttpDelete("{id}")]
         public ActionResult DeleteCategory(int id)
@@ -67,9 +49,9 @@ namespace JokesApi.Controllers
 
             if (result.Error == Error.None)
             {
-                return Ok("Category has been deleted");
+                return Ok("Category has been deleted");                
             }
-            return BadRequest(result.Error.Description);            
-        }
+            return BadRequest(result.Error);
+        }        
     }
 }

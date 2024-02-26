@@ -8,7 +8,7 @@ namespace JokesApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class JokesController : ControllerBase
+    public class JokesController : BaseController
     {
         private readonly ServiceJoke _serviceJoke;
         
@@ -26,37 +26,19 @@ namespace JokesApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<JokeModel> GetJokeById(int id)
         {
-            var jokeResult = _serviceJoke.GetJokeById(id);
-
-            if (jokeResult.Error != null)
-            {
-                return NotFound(jokeResult.Error.Description);
-            }
-            return Ok(jokeResult.Value);
+            return GetResponse(_serviceJoke.GetJokeById(id));            
         }
 
         [HttpPost]
         public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
         {
-            var result = await _serviceJoke.AddJoke(jokeModel);
-
-            if (result.Error != null)
-            {
-                return BadRequest(result.Error.Description);
-            }
-            return CreatedAtAction("GetJokeById", new { id = result.Value.Id }, result.Value);
+            return GetResponse(await _serviceJoke.AddJoke(jokeModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult PutJoke(int id, JokeModel jokeModel)
+        public ActionResult<JokeModel> PutJoke(int id, JokeModel jokeModel)
         {
-            var result = _serviceJoke.UpdateJoke(id, jokeModel);
-
-            if (result.Error != null)
-            {
-                return BadRequest(result.Error.Description);
-            }
-            return Ok(jokeModel);
+            return GetResponse(_serviceJoke.UpdateJoke(id, jokeModel));
         }
 
         [HttpDelete]
@@ -68,7 +50,7 @@ namespace JokesApi.Controllers
             {
                 return Ok("Joke has been deleted.");
             }
-            return BadRequest(result.Error.Description);              
+            return BadRequest(result.Error);              
         }               
     }
 }
