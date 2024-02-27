@@ -2,8 +2,6 @@
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
 using JokesApi_BAL.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-
 
 namespace JokesApi.Controllers
 {
@@ -43,15 +41,9 @@ namespace JokesApi.Controllers
         }               
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteCategory(int id)
+        public ActionResult<Category> DeleteCategory(int id)
         {
-            var result = _serviceCategory.DeleteCategory(id);
-
-            if (result.Error == Error.None)
-            {
-                return Ok("Category has been deleted");                
-            }
-            return BadRequest(result.Error);
+            return GetResponse(_serviceCategory.DeleteCategory(id));
         }        
     }
 }

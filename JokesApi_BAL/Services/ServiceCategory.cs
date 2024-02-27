@@ -3,6 +3,7 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
+using System.Diagnostics.Tracing;
 
 namespace JokesApi_BAL.Services
 {
@@ -65,7 +66,7 @@ namespace JokesApi_BAL.Services
             return GetCategoryById(id);
         }
 
-        public Result<Category, Error> DeleteCategory(int id)
+        public Result<Category, Error>? DeleteCategory(int id)
         {
             var existingCategory = GetCategoryById(id);
 
@@ -75,7 +76,8 @@ namespace JokesApi_BAL.Services
             }
 
             _repositoryCategory.Delete(id);
-            return Error.None;
+
+            return null;
         }
     }
 }

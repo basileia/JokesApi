@@ -83,7 +83,7 @@ namespace JokesApi_BAL.Services
             return GetJokeById(id);
         }
 
-        public Result<Joke, Error> DeleteJoke(int id)
+        public Result<Joke, Error>? DeleteJoke(int id)
         {
             var existingJoke = GetJokeById(id);
 
@@ -93,7 +93,7 @@ namespace JokesApi_BAL.Services
             }
 
             _repositoryJoke.Delete(id);
-            return Error.None;
+            return null;
         }
     }
 }

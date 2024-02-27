@@ -3,7 +3,6 @@ using JokesApi_DAL.Entities;
 using JokesApi_BAL.Services;
 using JokesApi_BAL.Models;
 
-
 namespace JokesApi.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -42,15 +41,9 @@ namespace JokesApi.Controllers
         }
 
         [HttpDelete]
-        public ActionResult DeleteJoke(int id)
-        {
-            var result = _serviceJoke.DeleteJoke(id);
-
-            if (result.Error == Error.None)
-            {
-                return Ok("Joke has been deleted.");
-            }
-            return BadRequest(result.Error);              
+        public ActionResult<Joke> DeleteJoke(int id)
+        {            
+            return GetResponse(_serviceJoke.DeleteJoke(id));        
         }               
     }
 }
