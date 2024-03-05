@@ -41,7 +41,7 @@ namespace JokesApi.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<Joke> DeleteJoke(int id)
+        public ActionResult<bool> DeleteJoke(int id)
         {            
             return GetResponse(_serviceJoke.DeleteJoke(id));        
         }               

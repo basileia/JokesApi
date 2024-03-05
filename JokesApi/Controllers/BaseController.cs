@@ -5,13 +5,9 @@ namespace JokesApi.Controllers
 {
     public class BaseController : ControllerBase
     {
-        public ActionResult<T> GetResponse<T, TError>(Result<T, TError>? result)
+        public ActionResult<T> GetResponse<T, TError>(Result<T, TError> result)
         {
-            if (result == null)
-            {
-                return Ok("Value has been deleted");
-            }
-            else if (!result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }

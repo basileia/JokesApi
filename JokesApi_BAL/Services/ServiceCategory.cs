@@ -66,7 +66,7 @@ namespace JokesApi_BAL.Services
             return GetCategoryById(id);
         }
 
-        public Result<Category, Error>? DeleteCategory(int id)
+        public Result<bool, Error>? DeleteCategory(int id)
         {
             var existingCategory = GetCategoryById(id);
 
@@ -77,7 +77,7 @@ namespace JokesApi_BAL.Services
 
             _repositoryCategory.Delete(id);
 
-            return null;
+            return true;
         }
     }
 }
