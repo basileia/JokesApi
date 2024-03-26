@@ -2,11 +2,10 @@
 {
     public interface IRepositoryBase<T>
     {
-        IEnumerable<T> GetAll();
+        List<T> GetAll();
         T GetById(int id);
-        Task<T> Add(T entity);
+        T Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-        bool Exists(int id);
     }
 }

@@ -29,15 +29,15 @@ namespace JokesApi.Controllers
         }
  
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
+        public ActionResult<Category> CreateCategory(CategoryModel categoryModel)
         {         
-            return GetResponse(await _serviceCategory.AddCategory(categoryModel));
+            return GetResponse(_serviceCategory.AddCategory(categoryModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult<CategoryModel> PutCategory(int id, string name)
+        public ActionResult<CategoryModel> PutCategory(int id, CategoryModel categoryModel)
         {
-            return GetResponse(_serviceCategory.UpdateCategory(id, name));
+            return GetResponse(_serviceCategory.UpdateCategory(id, categoryModel));
         }               
 
         [HttpDelete("{id}")]

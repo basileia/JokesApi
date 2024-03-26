@@ -3,16 +3,16 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
-using System.Diagnostics.Tracing;
+using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_BAL.Services
 {
     public class ServiceCategory
     {
-        private readonly IRepositoryCategory _repositoryCategory;
+        private readonly IRepositoryBase<Category> _repositoryCategory;
         private readonly IMapper _mapper;
 
-        public ServiceCategory(IRepositoryCategory repositoryCategory, IMapper mapper)
+        public ServiceCategory(IRepositoryBase<Category> repositoryCategory, IMapper mapper)
         {
             _repositoryCategory = repositoryCategory;
             _mapper = mapper;            
@@ -20,7 +20,7 @@ namespace JokesApi_BAL.Services
 
         public List<CategoryModel> GetAllCategories()
         {
-            List<Category> categories = _repositoryCategory.GetAllCategories();
+            List<Category> categories = _repositoryCategory.GetAll();
             List<CategoryModel> categoriesModel = _mapper.Map<List<Category>, List<CategoryModel>>(categories);
 
             return categoriesModel;
@@ -28,7 +28,7 @@ namespace JokesApi_BAL.Services
 
         public Result<CategoryModel, Error> GetCategoryById(int id)
         {
-            Category category = _repositoryCategory.GetCategoryById(id);
+            Category category = _repositoryCategory.GetById(id);
             
             if (category == null)
             {
@@ -40,19 +40,42 @@ namespace JokesApi_BAL.Services
             return categoryModel;
         }
 
-        public async Task<Result<Category, Error>> AddCategory(CategoryModel categoryModel)
+        public Result<Category, Error> AddCategory(CategoryModel categoryModel)
         {
-            if (_repositoryCategory.CategoryExists(categoryModel.Id))
+            if (_repositoryCategory.GetById(categoryModel.Id) != null)
              {
                 return CategoryErrors.CategoryExists;
              }
 
             var category = _mapper.Map<Category>(categoryModel);
-
-            return await _repositoryCategory.CreateCategory(category);            
+            
+            return _repositoryCategory.Add(category);
         }
 
-        public Result<CategoryModel, Error> UpdateCategory(int id, string name)
+        public Result<CategoryModel, Error> UpdateCategory(int id, CategoryModel categoryModel)
+        {
+            if (id != categoryModel.Id)
+            {
+                return CategoryErrors.CategoryBadRequest;
+            }
+
+            var existingCategory = GetCategoryById(id);
+
+            if (existingCategory.Error != null)
+            {
+                return CategoryErrors.CategoryNotFound;
+            }
+
+            var category = _mapper.Map<Category>(categoryModel);
+            
+           _repositoryCategory.Update(category);
+
+            var updatedCategory = GetCategoryById(id);
+
+            return updatedCategory;
+        }
+
+        public Result<bool, Error> DeleteCategory(int id)
         {
             var existingCategory = GetCategoryById(id);
 
@@ -61,21 +84,7 @@ namespace JokesApi_BAL.Services
                 return CategoryErrors.CategoryNotFound;
             }
 
-            _repositoryCategory.Update(id, name);
-
-            return GetCategoryById(id);
-        }
-
-        public Result<bool, Error>? DeleteCategory(int id)
-        {
-            var existingCategory = GetCategoryById(id);
-
-            if (existingCategory.Error != null)
-            {
-                return CategoryErrors.CategoryNotFound;
-            }
-
-            _repositoryCategory.Delete(id);
+            _repositoryCategory.Delete(_repositoryCategory.GetById(id));
 
             return true;
         }
