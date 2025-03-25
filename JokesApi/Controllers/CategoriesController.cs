@@ -3,12 +3,11 @@ using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
 using JokesApi_BAL.Models;
 
-
 namespace JokesApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseController
     {
         private readonly ServiceCategory _serviceCategory;
                 
@@ -23,34 +22,28 @@ namespace JokesApi.Controllers
             return _serviceCategory.GetAllCategories();
         }
 
-       
         [HttpGet("{id}")]
         public ActionResult<CategoryModel> GetCategoryById(int id)
         {
-            var category = _serviceCategory.GetCategoryById(id);
-            return category;
+            return GetResponse(_serviceCategory.GetCategoryById(id));
         }
-
+ 
         [HttpPost]
-        public async Task<ActionResult<Category>> CreateCategory(CategoryModel categoryModel)
-        {
-            await _serviceCategory.AddCategory(categoryModel);
-            return CreatedAtAction("GetCategoryById", new { categoryModel.Id }, categoryModel);
+        public ActionResult<Category> CreateCategory(CategoryModel categoryModel)
+        {         
+            return GetResponse(_serviceCategory.AddCategory(categoryModel));
         }
 
         [HttpPut("{id}")]
-        public ActionResult PutCategory(int id, CategoryModel categoryModel)
+        public ActionResult<CategoryModel> PutCategory(int id, CategoryModel categoryModel)
         {
-            _serviceCategory.UpdateCategory(id, categoryModel);
-            return Ok(categoryModel);
-        }
-                
+            return GetResponse(_serviceCategory.UpdateCategory(id, categoryModel));
+        }               
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteCategory(int id)
+        public ActionResult<bool> DeleteCategory(int id)
         {
-            _serviceCategory.DeleteCategory(id);
-            return Ok("Category has been deleted");
-        }
+            return GetResponse(_serviceCategory.DeleteCategory(id));
+        }        
     }
 }

@@ -26,72 +26,74 @@ namespace JokesApi_BAL.Services
             return jokesModel;
         }
 
-        public JokeModel GetJokeById(int id)
+        public Result<JokeModel, Error> GetJokeById(int id)
         {
             var joke = _repositoryJoke.GetJokeById(id);
             
             if (joke == null)
             {
-                throw new BadHttpRequestException("Invalid Id");
+                return JokeErrors.JokeNotFound;
             }
 
             var jokeModel = _mapper.Map<JokeModel>(joke);
             return jokeModel;
         }
 
-        public async Task<Joke> AddJoke(JokeModel jokeModel)
+        public async Task<Result<Joke, Error>> AddJoke(JokeModel jokeModel)
         {
             var joke = _mapper.Map<Joke>(jokeModel);
 
             if (_repositoryJoke.JokeExists(joke.Id))
             {
-                throw new BadHttpRequestException("Joke Id already exists.");
+                return JokeErrors.JokeExists;
             }
 
             if (!_repositoryCategory.CategoryExists(joke.CategoryId))
             {
-                throw new BadHttpRequestException("Category not found.");
+                return CategoryErrors.CategoryNotFound;
             }
 
             joke.CreatedAt = DateTime.Now;
-            return await _repositoryJoke.CreateJoke(joke);
-          
+            return await _repositoryJoke.CreateJoke(joke);          
         }
 
-        public void UpdateJoke(int id, JokeModel jokeModel)
+        public Result<JokeModel, Error> UpdateJoke(int id, JokeModel jokeModel)
         {
             if (id != jokeModel.Id)
             {
-                throw new BadHttpRequestException("The id in the path must be the same as the joke id.");
+                return JokeErrors.JokeBadRequest;
             }
 
             var existingJoke = GetJokeById(id);
 
-            if (existingJoke == null)
+            if (existingJoke.Error != null)
             {
-                throw new BadHttpRequestException("Joke not found");
+                return JokeErrors.JokeNotFound;
             }
 
             if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
             {
-                throw new BadHttpRequestException("Category not found.");
+                return CategoryErrors.CategoryNotFound;
             }
 
             var joke = _mapper.Map<Joke>(jokeModel);
             joke.CreatedAt = DateTime.Now;
             _repositoryJoke.Update(joke);
+
+            return GetJokeById(id);
         }
 
-        public void DeleteJoke(int id)
+        public Result<bool, Error>? DeleteJoke(int id)
         {
             var existingJoke = GetJokeById(id);
 
-            if (existingJoke == null)
+            if (existingJoke.Error != null)
             {
-                throw new BadHttpRequestException("Joke not found");
+                return JokeErrors.JokeNotFound;
             }
 
             _repositoryJoke.Delete(id);
+            return true;
         }
     }
 }

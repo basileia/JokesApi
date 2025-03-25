@@ -3,12 +3,11 @@ using JokesApi_DAL.Entities;
 using JokesApi_BAL.Services;
 using JokesApi_BAL.Models;
 
-
 namespace JokesApi.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class JokesController : ControllerBase
+    public class JokesController : BaseController
     {
         private readonly ServiceJoke _serviceJoke;
         
@@ -26,29 +25,25 @@ namespace JokesApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<JokeModel> GetJokeById(int id)
         {
-            var joke = _serviceJoke.GetJokeById(id);
-            return joke;
-        }
-
-        [HttpPut("{id}")]
-        public ActionResult PutJoke(int id, JokeModel jokeModel)
-        {
-            _serviceJoke.UpdateJoke(id, jokeModel);
-            return Ok(jokeModel);
+            return GetResponse(_serviceJoke.GetJokeById(id));            
         }
 
         [HttpPost]
         public async Task<ActionResult<Joke>> CreateJoke(JokeModel jokeModel)
         {
-            await _serviceJoke.AddJoke(jokeModel);
-            return CreatedAtAction("GetJokeById", new { id = jokeModel.Id }, jokeModel);
+            return GetResponse(await _serviceJoke.AddJoke(jokeModel));
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<JokeModel> PutJoke(int id, JokeModel jokeModel)
+        {
+            return GetResponse(_serviceJoke.UpdateJoke(id, jokeModel));
         }
 
         [HttpDelete]
-        public ActionResult DeleteJoke(int id)
-        {
-            _serviceJoke.DeleteJoke(id);
-            return Ok("Joke has been deleted.");   
+        public ActionResult<bool> DeleteJoke(int id)
+        {            
+            return GetResponse(_serviceJoke.DeleteJoke(id));        
         }               
     }
 }

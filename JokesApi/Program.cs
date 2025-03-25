@@ -3,13 +3,11 @@ using JokesApi_BAL.Extensions;
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Data;
+using JokesApi_DAL.Entities;
 using JokesApi_DAL.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -22,13 +20,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
 
 builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
-builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
+builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
 builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
+builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<IMapper, Mapper>();
-
-//builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-//builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -43,11 +39,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
-
-//app.UseExceptionHandler();
 
 app.UseAuthorization();
 

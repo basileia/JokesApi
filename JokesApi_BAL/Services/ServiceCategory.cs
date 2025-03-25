@@ -3,16 +3,16 @@
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_BAL.Services
 {
     public class ServiceCategory
     {
-        private readonly IRepositoryCategory _repositoryCategory;
+        private readonly IRepositoryBase<Category> _repositoryCategory;
         private readonly IMapper _mapper;
 
-        public ServiceCategory(IRepositoryCategory repositoryCategory, IMapper mapper)
+        public ServiceCategory(IRepositoryBase<Category> repositoryCategory, IMapper mapper)
         {
             _repositoryCategory = repositoryCategory;
             _mapper = mapper;            
@@ -20,19 +20,19 @@ namespace JokesApi_BAL.Services
 
         public List<CategoryModel> GetAllCategories()
         {
-            List<Category> categories = _repositoryCategory.GetAllCategories();
+            List<Category> categories = _repositoryCategory.GetAll();
             List<CategoryModel> categoriesModel = _mapper.Map<List<Category>, List<CategoryModel>>(categories);
 
             return categoriesModel;
         }
 
-        public CategoryModel GetCategoryById(int id)
+        public Result<CategoryModel, Error> GetCategoryById(int id)
         {
-            Category category = _repositoryCategory.GetCategoryById(id);
+            Category category = _repositoryCategory.GetById(id);
             
             if (category == null)
             {
-                throw new BadHttpRequestException("Category not found");
+                return CategoryErrors.CategoryNotFound;
             }
             
             CategoryModel categoryModel = _mapper.Map<Category, CategoryModel>(category);
@@ -40,46 +40,53 @@ namespace JokesApi_BAL.Services
             return categoryModel;
         }
 
-        public async Task<Category> AddCategory(CategoryModel categoryModel)
+        public Result<Category, Error> AddCategory(CategoryModel categoryModel)
         {
-            if (_repositoryCategory.CategoryExists(categoryModel.Id))
+            if (_repositoryCategory.GetById(categoryModel.Id) != null)
              {
-                throw new BadHttpRequestException("Category already exists.");
+                return CategoryErrors.CategoryExists;
              }
 
             var category = _mapper.Map<Category>(categoryModel);
-
-            return await _repositoryCategory.CreateCategory(category);            
+            
+            return _repositoryCategory.Add(category);
         }
 
-        public void UpdateCategory(int id, CategoryModel categoryModel)
+        public Result<CategoryModel, Error> UpdateCategory(int id, CategoryModel categoryModel)
         {
             if (id != categoryModel.Id)
             {
-                throw new BadHttpRequestException("The id in the path must be the same as the category id.");
+                return CategoryErrors.CategoryBadRequest;
             }
 
             var existingCategory = GetCategoryById(id);
 
-            if (existingCategory == null)
+            if (existingCategory.Error != null)
             {
-                throw new BadHttpRequestException("Category not found");
+                return CategoryErrors.CategoryNotFound;
             }
 
             var category = _mapper.Map<Category>(categoryModel);
-            _repositoryCategory.Update(category);
+            
+           _repositoryCategory.Update(category);
+
+            var updatedCategory = GetCategoryById(id);
+
+            return updatedCategory;
         }
 
-        public void DeleteCategory(int id)
+        public Result<bool, Error> DeleteCategory(int id)
         {
             var existingCategory = GetCategoryById(id);
 
-            if (existingCategory == null)
+            if (existingCategory.Error != null)
             {
-                throw new BadHttpRequestException("Category not found");
+                return CategoryErrors.CategoryNotFound;
             }
 
-            _repositoryCategory.Delete(id);
+            _repositoryCategory.Delete(_repositoryCategory.GetById(id));
+
+            return true;
         }
     }
 }
