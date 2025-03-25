@@ -33,8 +33,8 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
 
 2. Restore dependencies:
    ```bash
-  dotnet restore
-
+   dotnet restore
+   
 3. Apply migrations (if using EF Core with PostgreSQL):
    ```bash 
    dotnet ef database update
