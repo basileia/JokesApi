@@ -16,13 +16,19 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
 - **PostgreSQL** for database storage 
 
 ## Database Setup  
-1. Install **PostgreSQL** on your machine or use a cloud database.  
-2. Update the connection string in the `appsettings.json` file to point to your PostgreSQL database:
+1. Install **PostgreSQL** on your machine or use a cloud database.
+   
+2. Update the connection string in the `appsettings.json` file to point to your PostgreSQL database.  
+   Since the `appsettings.json` file is not included in the repository for security reasons, you'll need to create it in the `JokesApi/JokesApi` directory.
+   Here is an example of how your `appsettings.json` should look:
    ```json
-   "ConnectionStrings": {
-     "DefaultConnection": "Host=localhost;Database=jokesapi;Username=yourusername;Password=yourpassword"
+   {
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=jokesapi;Username=yourusername;Password=yourpassword"
+  }
    }
-4. Apply migrations to create the database schema:
+   
+3. Apply migrations to create the database schema:
    ```bash 
    dotnet ef database update
 
