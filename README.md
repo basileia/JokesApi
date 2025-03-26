@@ -30,16 +30,13 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
 1. Clone the repository:
    ```bash 
    git clone https://github.com/basileia/JokesApi.git  
-   cd JokesApi
+   cd JokesApi/JokesApi
 
-2. Restore dependencies:
-   ```bash
-   dotnet restore
-   
-3. Run the project:
+2. Run the project:
    ```bash 
    dotnet run
 
-4. Open Swagger UI at:
+3. Open Swagger UI at:
    ```bash 
-   https://localhost:7089/swagger/index.html
+   https://localhost:<port>/swagger/index.html
+   To find the correct port, check the console output after running the application. You should see a message like:Now listening on: https://localhost:xxxx
