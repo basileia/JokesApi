@@ -33,16 +33,19 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
 3. Apply migrations to create the database schema:
    ```bash 
    dotnet ef database update
+   ```
 
 ## Installation & Running  
 1. Clone the repository:
    ```bash 
    git clone https://github.com/basileia/JokesApi.git  
    cd JokesApi/JokesApi
+   ```
 
 2. Run the project:
    ```bash 
    dotnet run
+   ```
 
 3. Open Swagger UI at:
    ```bash 
