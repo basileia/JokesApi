@@ -34,6 +34,14 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
    ```bash 
    dotnet ef database update
    ```
+   If you encounter issues running the above command in the terminal, you can also apply the migrations in Visual Studio using the NuGet Package Manager Console:
+   
+   1. Open NuGet Package Manager Console in Visual Studio by navigating to Tools > NuGet Package Manager > Package Manager Console.
+
+   2. Run the following command:
+      ```bash 
+      update-database
+      ```
 
 ## Installation & Running  
 1. Clone the repository:
