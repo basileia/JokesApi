@@ -39,4 +39,5 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
 3. Open Swagger UI at:
    ```bash 
    https://localhost:<port>/swagger/index.html
+   ```bash
    To find the correct port, check the console output after running the application. You should see a message like:Now listening on: https://localhost:xxxx
