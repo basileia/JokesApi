@@ -28,7 +28,7 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
     "DefaultConnection": "Host=localhost;Database=jokesapi;Username=yourusername;Password=yourpassword"
   }
 }
-   ```
+```
    
 3. Apply migrations to create the database schema:
    ```bash 
