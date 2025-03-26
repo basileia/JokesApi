@@ -22,11 +22,11 @@ A simple REST API for managing jokes and categories, built with **ASP.NET Core**
    Since the `appsettings.json` file is not included in the repository for security reasons, you'll need to create it in the `JokesApi/JokesApi` directory.
    Here is an example of how your `appsettings.json` should look:
    
-   ```json
+```json
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Database=jokesapi;Username=yourusername;Password=yourpassword"
-  }
+"ConnectionStrings": {
+"DefaultConnection": "Host=localhost;Database=jokesapi;Username=yourusername;Password=yourpassword"
+}
 }
 ```
    
