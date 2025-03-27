@@ -5,7 +5,7 @@ using JokesApi_BAL.Models;
 
 namespace JokesApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : BaseController
     {
@@ -17,13 +17,13 @@ namespace JokesApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CategoryModel>> GetAllCategories()
+        public ActionResult<List<CategoryModel>> GetCategories()
         {
             return _serviceCategory.GetAllCategories();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CategoryModel> GetCategoryById(int id)
+        public ActionResult<CategoryModel> GetCategory(int id)
         {
             return GetResponse(_serviceCategory.GetCategoryById(id));
         }
@@ -35,7 +35,7 @@ namespace JokesApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<CategoryModel> PutCategory(int id, CategoryModel categoryModel)
+        public ActionResult<CategoryModel> UpdateCategory(int id, CategoryModel categoryModel)
         {
             return GetResponse(_serviceCategory.UpdateCategory(id, categoryModel));
         }               
