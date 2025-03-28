@@ -6,17 +6,23 @@ namespace JokesApi.Controllers
 {
     public class BaseController : ControllerBase
     {
-        public ActionResult GetResponse<T, TError>(Result<T, TError> result)
+        public ActionResult GetResponse<T, TError>(Result<T, TError> result, string actionName = null, object routeValues = null)
         {            
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
 
-            //DELETE operace
+            //DELETE
             if (typeof(T) == typeof(Unit))
             {
                 return NoContent();
+            }
+
+            //CREATE
+            if (actionName != null && routeValues != null)
+            {
+                return CreatedAtAction(actionName, routeValues, result.Value);
             }
 
             return Ok(result.Value);

@@ -33,12 +33,12 @@ namespace JokesApi.Controllers
         {
             var result = _serviceCategory.AddCategory(categoryModel);
 
-            if (!result.IsSuccess)
+            if (!result.IsSuccess || result.Value == null)
             {
-                return BadRequest(result.Error);
+                return GetResponse(result); 
             }
 
-            return CreatedAtAction(nameof(GetCategory), new { id = result.Value.Id }, result.Value);
+            return GetResponse(result, nameof(GetCategory), new { id = result.Value.Id });
         }
 
         [HttpPut("{id}")]
