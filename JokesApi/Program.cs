@@ -14,8 +14,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 );
-builder.Services.AddAutoMapper(typeof(AppMapperProfile));
-builder.Services.AddAutoMapper(typeof(CategoryProfile));
+builder.Services.AddAutoMapper(typeof(AppMapperProfile), typeof(CategoryProfile));
+
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>  
         options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));

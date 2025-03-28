@@ -49,7 +49,7 @@ namespace JokesApi_DAL.Repository
 
         public T GetByProperty(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().FirstOrDefault(predicate);
+            return _dbSet.FirstOrDefault(predicate);
         }
     }
 }

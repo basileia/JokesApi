@@ -19,21 +19,7 @@ namespace JokesApi_DAL.Repository
                 .FirstOrDefault();
             
             return category;
-        }
-
-        public async Task<Category> CreateCategory(Category category)
-        {
-            if (category != null)
-            {
-                var obj = _context.Add(category);
-                await _context.SaveChangesAsync();
-                return obj.Entity;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        }              
 
         public void Update(int id, string name)
         {
@@ -61,7 +47,7 @@ namespace JokesApi_DAL.Repository
 
         public Category GetByName(string name)
         {
-            return GetByProperty(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return GetByProperty(c => c.Name == name);
         }
     }
 }

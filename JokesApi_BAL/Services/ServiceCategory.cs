@@ -22,7 +22,7 @@ namespace JokesApi_BAL.Services
         public List<CategoryModel> GetAllCategories()
         {
             var categories = _repositoryCategory.GetAll();            
-            return _mapper.Map<List<Category>, List<CategoryModel>>(categories);
+            return _mapper.Map<List<CategoryModel>>(categories);
         }
 
         public Result<CategoryDetailModel, Error> GetCategoryById(int id)
@@ -34,18 +34,18 @@ namespace JokesApi_BAL.Services
                 return CategoryErrors.CategoryNotFound;
             }
  
-            return _mapper.Map<Category, CategoryDetailModel>(category);
+            return _mapper.Map<CategoryDetailModel>(category);
         }
 
         public Result<Category, Error> AddCategory(CreateCategoryModel categoryModel)
         {
+            if (categoryModel == null)
+                return CategoryErrors.CategoryIsEmpty;
+
             if (_repositoryCategory.GetByName(categoryModel.Name) != null)
-             {
                 return CategoryErrors.CategoryExists;
-             }
 
             var category = _mapper.Map<Category>(categoryModel);
-            
             return _repositoryCategory.Add(category);
         }
 
