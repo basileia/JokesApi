@@ -48,7 +48,7 @@ namespace JokesApi.Controllers
         }               
 
         [HttpDelete("{id}")]
-        public ActionResult<bool> DeleteCategory(int id)
+        public ActionResult DeleteCategory(int id)
         {
             return GetResponse(_serviceCategory.DeleteCategory(id));
         }        

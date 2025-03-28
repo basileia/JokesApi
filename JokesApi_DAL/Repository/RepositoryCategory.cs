@@ -19,18 +19,8 @@ namespace JokesApi_DAL.Repository
                 .FirstOrDefault();
             
             return category;
-        }              
-
-        public void Delete(int id)
-        {
-            var category = _context.Categories.Find(id);
-            if (category != null)
-            {
-                _context.Categories.Remove(category);
-                _context.SaveChanges();
-            }
         }
-
+        
         public bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);

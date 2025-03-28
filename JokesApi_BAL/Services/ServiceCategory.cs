@@ -4,6 +4,7 @@ using JokesApi_BAL.Models;
 using JokesApi_BAL.Models.Category;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
+using LanguageExt;
 using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_BAL.Services
@@ -68,18 +69,15 @@ namespace JokesApi_BAL.Services
             return GetCategoryById(id);
         }
 
-        public Result<bool, Error> DeleteCategory(int id)
+        public Result<Unit, Error> DeleteCategory(int id)
         {
             var existingCategory = GetCategoryById(id);
-
             if (existingCategory.Error != null)
             {
                 return CategoryErrors.CategoryNotFound;
             }
-
-            _repositoryCategory.Delete(_repositoryCategory.GetById(id));
-
-            return true;
+            _repositoryCategory.Delete(id);
+            return Unit.Default;
         }
     }
 }

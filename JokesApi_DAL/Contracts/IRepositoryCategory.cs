@@ -6,7 +6,6 @@ namespace JokesApi_DAL.Contracts
     {
         Category GetCategoryById(int id);
         bool CategoryExists(int id);
-        void Delete(int id);
         Category GetByName(string name);
     }
 }

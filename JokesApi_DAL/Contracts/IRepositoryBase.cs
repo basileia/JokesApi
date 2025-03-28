@@ -8,7 +8,7 @@ namespace JokesApi_DAL.Contracts
         T GetById(int id);
         T Add(T entity);
         void Update(T entity);
-        void Delete(T entity);
+        void Delete(int id);
         T GetByProperty(Expression<Func<T, bool>> predicate);
     }
 }
