@@ -1,12 +1,13 @@
 ﻿using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace JokesApi_DAL.Repository
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
-        private readonly AppDbContext _context;
+        protected readonly AppDbContext _context;
         private readonly DbSet<T> _dbSet;
 
         public RepositoryBase(AppDbContext context)
@@ -44,6 +45,11 @@ namespace JokesApi_DAL.Repository
         {
             _dbSet.Remove(entity);
             _context.SaveChanges();
-        }        
+        }
+
+        public T GetByProperty(Expression<Func<T, bool>> predicate)
+        {
+            return _context.Set<T>().FirstOrDefault(predicate);
+        }
     }
 }

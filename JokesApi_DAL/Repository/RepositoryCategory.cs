@@ -5,24 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_DAL.Repository
 {
-    public class RepositoryCategory : IRepositoryCategory
+    public class RepositoryCategory : RepositoryBase<Category>, IRepositoryCategory
     {
-        private readonly AppDbContext _context;
+        public RepositoryCategory(AppDbContext context) : base(context) { }
 
-        public RepositoryCategory(AppDbContext context)
-        {
-            _context = context;
-        }
-                       
-        public List<Category> GetAllCategories()
-        {
-            var categories = _context.Categories
-                .Include(_ => _.Jokes)
-                .ToList();
-
-            return categories;
-        }
-
+        
         public Category GetCategoryById(int id)
         {
             var category =_context.Categories
@@ -70,6 +57,11 @@ namespace JokesApi_DAL.Repository
         public bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);
+        }
+
+        public Category GetByName(string name)
+        {
+            return GetByProperty(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

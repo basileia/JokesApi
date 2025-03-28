@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using JokesApi_BAL.Models;
+using JokesApi_BAL.Models.Category;
+using JokesApi_BAL.Models.Joke;
 using JokesApi_DAL.Entities;
 
 namespace JokesApi_BAL.Extensions
@@ -8,8 +10,10 @@ namespace JokesApi_BAL.Extensions
     {
         public AppMapperProfile()
         {
-            CreateMap<Category, CategoryModel>().ReverseMap();
+            
+
             CreateMap<Joke, JokeModel>().ReverseMap();
+
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace JokesApi_BAL.Models
+namespace JokesApi_BAL.Models.Joke
 {
-    public class JokeModel
+    public class JokeDetailModel
     {
         [Key]
         public int Id { get; set; }

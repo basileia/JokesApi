@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JokesApi_BAL.Services;
 using JokesApi_DAL.Entities;
-using JokesApi_BAL.Models;
+using JokesApi_BAL.Models.Category;
 
 namespace JokesApi.Controllers
 {
@@ -23,19 +23,26 @@ namespace JokesApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CategoryModel> GetCategory(int id)
+        public ActionResult<CategoryDetailModel> GetCategory(int id)
         {
             return GetResponse(_serviceCategory.GetCategoryById(id));
         }
  
         [HttpPost]
-        public ActionResult<Category> CreateCategory(CategoryModel categoryModel)
-        {         
-            return GetResponse(_serviceCategory.AddCategory(categoryModel));
+        public ActionResult<Category> CreateCategory(CreateCategoryModel categoryModel)
+        {
+            var result = _serviceCategory.AddCategory(categoryModel);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+
+            return CreatedAtAction(nameof(GetCategory), new { id = result.Value.Id }, result.Value);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<CategoryModel> UpdateCategory(int id, CategoryModel categoryModel)
+        public ActionResult<CategoryDetailModel> UpdateCategory(int id, CategoryDetailModel categoryModel)
         {
             return GetResponse(_serviceCategory.UpdateCategory(id, categoryModel));
         }               

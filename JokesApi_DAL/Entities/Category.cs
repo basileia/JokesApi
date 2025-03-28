@@ -7,6 +7,6 @@ namespace JokesApi_DAL.Entities
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public ICollection<Joke>? Jokes { get; set; }  
+        public ICollection<Joke> Jokes { get; set; } = new List<Joke>();
     }
 }

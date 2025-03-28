@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JokesApi_BAL.Models;
+using JokesApi_BAL.Models.Joke;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
 using Microsoft.AspNetCore.Http;
@@ -57,31 +58,31 @@ namespace JokesApi_BAL.Services
             return await _repositoryJoke.CreateJoke(joke);          
         }
 
-        public Result<JokeModel, Error> UpdateJoke(int id, JokeModel jokeModel)
-        {
-            if (id != jokeModel.Id)
-            {
-                return JokeErrors.JokeBadRequest;
-            }
+        //public Result<JokeModel, Error> UpdateJoke(int id, JokeModel jokeModel)
+        //{
+        //    if (id != jokeModel.Id)
+        //    {
+        //        return JokeErrors.JokeBadRequest;
+        //    }
 
-            var existingJoke = GetJokeById(id);
+        //    var existingJoke = GetJokeById(id);
 
-            if (existingJoke.Error != null)
-            {
-                return JokeErrors.JokeNotFound;
-            }
+        //    if (existingJoke.Error != null)
+        //    {
+        //        return JokeErrors.JokeNotFound;
+        //    }
 
-            if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
-            {
-                return CategoryErrors.CategoryNotFound;
-            }
+        //    if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
+        //    {
+        //        return CategoryErrors.CategoryNotFound;
+        //    }
 
-            var joke = _mapper.Map<Joke>(jokeModel);
-            joke.CreatedAt = DateTime.Now;
-            _repositoryJoke.Update(joke);
+        //    var joke = _mapper.Map<Joke>(jokeModel);
+        //    joke.CreatedAt = DateTime.Now;
+        //    _repositoryJoke.Update(joke);
 
-            return GetJokeById(id);
-        }
+        //    return GetJokeById(id);
+        //}
 
         public Result<bool, Error>? DeleteJoke(int id)
         {

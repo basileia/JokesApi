@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 
 using JokesApi_BAL.Models;
+using JokesApi_BAL.Models.Category;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,10 @@ namespace JokesApi_BAL.Services
 {
     public class ServiceCategory
     {
-        private readonly IRepositoryBase<Category> _repositoryCategory;
+        private readonly IRepositoryCategory _repositoryCategory;
         private readonly IMapper _mapper;
 
-        public ServiceCategory(IRepositoryBase<Category> repositoryCategory, IMapper mapper)
+        public ServiceCategory(IRepositoryCategory repositoryCategory, IMapper mapper)
         {
             _repositoryCategory = repositoryCategory;
             _mapper = mapper;            
@@ -20,13 +21,11 @@ namespace JokesApi_BAL.Services
 
         public List<CategoryModel> GetAllCategories()
         {
-            List<Category> categories = _repositoryCategory.GetAll();
-            List<CategoryModel> categoriesModel = _mapper.Map<List<Category>, List<CategoryModel>>(categories);
-
-            return categoriesModel;
+            var categories = _repositoryCategory.GetAll();            
+            return _mapper.Map<List<Category>, List<CategoryModel>>(categories);
         }
 
-        public Result<CategoryModel, Error> GetCategoryById(int id)
+        public Result<CategoryDetailModel, Error> GetCategoryById(int id)
         {
             Category category = _repositoryCategory.GetById(id);
             
@@ -35,14 +34,14 @@ namespace JokesApi_BAL.Services
                 return CategoryErrors.CategoryNotFound;
             }
             
-            CategoryModel categoryModel = _mapper.Map<Category, CategoryModel>(category);
+            CategoryDetailModel categoryModel = _mapper.Map<Category, CategoryDetailModel>(category);
 
             return categoryModel;
         }
 
-        public Result<Category, Error> AddCategory(CategoryModel categoryModel)
+        public Result<Category, Error> AddCategory(CreateCategoryModel categoryModel)
         {
-            if (_repositoryCategory.GetById(categoryModel.Id) != null)
+            if (_repositoryCategory.GetByName(categoryModel.Name) != null)
              {
                 return CategoryErrors.CategoryExists;
              }
@@ -52,7 +51,7 @@ namespace JokesApi_BAL.Services
             return _repositoryCategory.Add(category);
         }
 
-        public Result<CategoryModel, Error> UpdateCategory(int id, CategoryModel categoryModel)
+        public Result<CategoryDetailModel, Error> UpdateCategory(int id, CategoryDetailModel categoryModel)
         {
             if (id != categoryModel.Id)
             {
