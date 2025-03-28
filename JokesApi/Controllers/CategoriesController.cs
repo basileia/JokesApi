@@ -42,7 +42,7 @@ namespace JokesApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<CategoryDetailModel> UpdateCategory(int id, CategoryDetailModel categoryModel)
+        public ActionResult<CategoryDetailModel> UpdateCategory(int id, CategoryModel categoryModel)
         {
             return GetResponse(_serviceCategory.UpdateCategory(id, categoryModel));
         }               

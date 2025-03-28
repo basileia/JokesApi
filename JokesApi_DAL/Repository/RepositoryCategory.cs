@@ -21,15 +21,6 @@ namespace JokesApi_DAL.Repository
             return category;
         }              
 
-        public void Update(int id, string name)
-        {
-            _context.Categories
-                .Where(_ => _.Id == id)
-                .ExecuteUpdate(_ => _.SetProperty(u => u.Name, name));
-
-            _context.SaveChanges();
-        }
-
         public void Delete(int id)
         {
             var category = _context.Categories.Find(id);
