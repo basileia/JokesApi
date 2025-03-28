@@ -27,16 +27,14 @@ namespace JokesApi_BAL.Services
 
         public Result<CategoryDetailModel, Error> GetCategoryById(int id)
         {
-            Category category = _repositoryCategory.GetById(id);
+            var category = _repositoryCategory.GetCategoryById(id);
             
             if (category == null)
             {
                 return CategoryErrors.CategoryNotFound;
             }
-            
-            CategoryDetailModel categoryModel = _mapper.Map<Category, CategoryDetailModel>(category);
-
-            return categoryModel;
+ 
+            return _mapper.Map<Category, CategoryDetailModel>(category);
         }
 
         public Result<Category, Error> AddCategory(CreateCategoryModel categoryModel)
