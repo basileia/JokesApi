@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JokesApi_BAL.Models;
+using JokesApi_BAL.Models.Errors;
 using JokesApi_BAL.Models.Joke;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;

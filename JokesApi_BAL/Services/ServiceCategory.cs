@@ -2,6 +2,7 @@
 
 using JokesApi_BAL.Models;
 using JokesApi_BAL.Models.Category;
+using JokesApi_BAL.Models.Errors;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
 using LanguageExt;
