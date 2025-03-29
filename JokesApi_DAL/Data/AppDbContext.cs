@@ -12,7 +12,8 @@ namespace JokesApi_DAL.Data
             modelBuilder.Entity<Joke>()
                 .HasOne(e => e.Category)
                 .WithMany(e => e.Jokes)
-                .HasForeignKey(e => e.CategoryId);
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Joke> Jokes { get; set; }

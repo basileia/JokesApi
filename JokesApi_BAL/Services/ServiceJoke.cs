@@ -22,9 +22,8 @@ namespace JokesApi_BAL.Services
 
         public List<JokeModel> GetAllJokes()
         {
-            var jokes = _repositoryJoke.GetAllJokes();
-            var jokesModel = _mapper.Map<List<Joke>, List<JokeModel>>(jokes);
-            return jokesModel;
+            var jokes = _repositoryJoke.GetAll();
+            return _mapper.Map<List<Joke>, List<JokeModel>>(jokes);
         }
 
         public Result<JokeModel, Error> GetJokeById(int id)

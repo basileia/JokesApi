@@ -14,7 +14,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 );
-builder.Services.AddAutoMapper(typeof(AppMapperProfile), typeof(CategoryProfile));
+builder.Services.AddAutoMapper(typeof(JokeProfile), typeof(CategoryProfile));
 
 var Configuration = builder.Configuration;
 builder.Services.AddDbContext<AppDbContext>(options =>  

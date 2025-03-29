@@ -2,9 +2,8 @@
 
 namespace JokesApi_DAL.Contracts
 {
-    public interface IRepositoryJoke
+    public interface IRepositoryJoke : IRepositoryBase<Joke>
     {
-        List<Joke> GetAllJokes();
         Joke GetJokeById(int id);
         Task<Joke> CreateJoke(Joke joke);
         bool JokeExists(int id);

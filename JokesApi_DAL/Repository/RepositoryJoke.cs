@@ -5,20 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JokesApi_DAL.Repository
 {
-    public class RepositoryJoke : IRepositoryJoke
+    public class RepositoryJoke : RepositoryBase<Joke>, IRepositoryJoke
     {
-        private readonly AppDbContext _context;
-
-        public RepositoryJoke(AppDbContext context)
-        {
-            _context = context;
-        }
-
-        public List<Joke> GetAllJokes()
-        {
-            return _context.Jokes.ToList();
-        }
-
+        public RepositoryJoke(AppDbContext context) : base(context) { }
+                
         public Joke GetJokeById(int id)
         {
             var joke = _context.Jokes
