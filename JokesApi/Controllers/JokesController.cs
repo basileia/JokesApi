@@ -22,7 +22,7 @@ namespace JokesApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<JokeModel> GetJoke(int id)
+        public ActionResult<JokeDetailModel> GetJoke(int id)
         {
             return GetResponse(_serviceJoke.GetJokeById(id));
         }

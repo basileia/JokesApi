@@ -27,7 +27,7 @@ namespace JokesApi_BAL.Services
             return _mapper.Map<List<Joke>, List<JokeModel>>(jokes);
         }
 
-        public Result<JokeModel, Error> GetJokeById(int id)
+        public Result<JokeDetailModel, Error> GetJokeById(int id)
         {
             var joke = _repositoryJoke.GetJokeById(id);
             
@@ -36,7 +36,7 @@ namespace JokesApi_BAL.Services
                 return JokeErrors.JokeNotFound;
             }
 
-            return _mapper.Map<JokeModel>(joke);
+            return _mapper.Map<JokeDetailModel>(joke);
         }
 
         public async Task<Result<Joke, Error>> AddJoke(JokeModel jokeModel)
