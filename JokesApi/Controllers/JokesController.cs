@@ -21,11 +21,11 @@ namespace JokesApi.Controllers
             return _serviceJoke.GetAllJokes();
         }
 
-        //[HttpGet("{id}")]
-        //public ActionResult<JokeModel> GetJoke(int id)
-        //{
-        //    return GetResponse(_serviceJoke.GetJokeById(id));
-        //}
+        [HttpGet("{id}")]
+        public ActionResult<JokeModel> GetJoke(int id)
+        {
+            return GetResponse(_serviceJoke.GetJokeById(id));
+        }
 
         //[HttpPost]
         //public async Task<ActionResult<JokeModel>> CreateJoke(JokeModel jokeModel)

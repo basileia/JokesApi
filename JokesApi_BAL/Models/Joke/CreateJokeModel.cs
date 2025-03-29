@@ -1,8 +1,8 @@
 ﻿namespace JokesApi_BAL.Models.Joke
 {
-    public class JokeModel
+    public class CreateJokeModel
     {
-        public int Id { get; set; }
         public required string Content { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

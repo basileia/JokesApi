@@ -29,6 +29,6 @@ namespace JokesApi_DAL.Repository
         public Category GetByName(string name)
         {
             return GetByProperty(c => c.Name == name);
-        }
+        }        
     }
 }

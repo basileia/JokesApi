@@ -36,8 +36,7 @@ namespace JokesApi_BAL.Services
                 return JokeErrors.JokeNotFound;
             }
 
-            var jokeModel = _mapper.Map<JokeModel>(joke);
-            return jokeModel;
+            return _mapper.Map<JokeModel>(joke);
         }
 
         public async Task<Result<Joke, Error>> AddJoke(JokeModel jokeModel)
@@ -49,7 +48,7 @@ namespace JokesApi_BAL.Services
                 return JokeErrors.JokeExists;
             }
 
-            if (!_repositoryCategory.CategoryExists(joke.CategoryId))
+            if (joke.CategoryId.HasValue && !_repositoryCategory.CategoryExists(joke.CategoryId.Value))
             {
                 return CategoryErrors.CategoryNotFound;
             }
