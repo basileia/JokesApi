@@ -30,7 +30,7 @@ namespace JokesApi.Controllers
         }
  
         [HttpPost]
-        public ActionResult<Category> CreateCategory(CreateCategoryModel categoryModel)
+        public ActionResult<CategoryModel> CreateCategory(CreateCategoryModel categoryModel)
         {
             var result = _serviceCategory.AddCategory(categoryModel);
 

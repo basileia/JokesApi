@@ -39,11 +39,11 @@ namespace JokesApi_BAL.Services
             return _mapper.Map<JokeDetailModel>(joke);
         }
 
-        public async Task<Result<Joke, Error>> AddJoke(JokeModel jokeModel)
+        public Result<Joke, Error> AddJoke(CreateJokeModel jokeModel)
         {
             var joke = _mapper.Map<Joke>(jokeModel);
 
-            if (_repositoryJoke.JokeExists(joke.Id))
+            if (_repositoryJoke.JokeExists(joke.Content))
             {
                 return JokeErrors.JokeExists;
             }
@@ -54,7 +54,7 @@ namespace JokesApi_BAL.Services
             }
 
             joke.CreatedAt = DateTime.Now;
-            return await _repositoryJoke.CreateJoke(joke);          
+            return  _repositoryJoke.Add(joke);          
         }
 
         //public Result<JokeModel, Error> UpdateJoke(int id, JokeModel jokeModel)

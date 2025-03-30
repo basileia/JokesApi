@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JokesApi_BAL.Services;
 using JokesApi_BAL.Models.Joke;
+using JokesApi_BAL.Models.Category;
 
 namespace JokesApi.Controllers
 {
@@ -27,18 +28,18 @@ namespace JokesApi.Controllers
             return GetResponse(_serviceJoke.GetJokeById(id));
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<JokeModel>> CreateJoke(JokeModel jokeModel)
-        //{
-        //    var result = await _serviceJoke.AddJoke(jokeModel);
+        [HttpPost]
+        public ActionResult<JokeModel> CreateJoke(CreateJokeModel jokeModel)
+        {
+            var result = _serviceJoke.AddJoke(jokeModel);
 
-        //    if (!result.IsSuccess)
-        //    {
-        //        return BadRequest(result.Error);
-        //    }
+            if (!result.IsSuccess || result.Value == null)
+            {
+                return GetResponse(result);
+            }
 
-        //    return CreatedAtAction(nameof(GetJoke), new { id = result.Value.Id }, result.Value);
-        //}
+            return GetResponse(result, nameof(GetJoke), new { id = result.Value.Id });
+        }
 
         //[HttpPut("{id}")]
         //public ActionResult<JokeModel> UpdateJoke(int id, JokeModel jokeModel)

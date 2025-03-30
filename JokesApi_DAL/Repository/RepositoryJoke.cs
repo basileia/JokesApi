@@ -19,21 +19,7 @@ namespace JokesApi_DAL.Repository
 
             return joke;
         }
-
-        public async Task<Joke> CreateJoke(Joke joke)
-        {
-            if (joke != null)
-            {
-                var obj = _context.Add(joke);
-                await _context.SaveChangesAsync();
-                return obj.Entity;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
+        
         public void Update(Joke joke)
         {
             _context.Entry(joke).State = EntityState.Modified;
@@ -50,9 +36,9 @@ namespace JokesApi_DAL.Repository
             }
         }
 
-        public bool JokeExists(int id)
+        public bool JokeExists(string content)
         {
-            return _context.Jokes.Any(e => e.Id == id);
+            return _context.Jokes.Any(e => e.Content == content);
         }
     }
 }
