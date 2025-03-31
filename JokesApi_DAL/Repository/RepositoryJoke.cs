@@ -24,17 +24,7 @@ namespace JokesApi_DAL.Repository
         {
             _context.Entry(joke).State = EntityState.Modified;
             _context.SaveChanges();
-        }
-
-        public void Delete(int id)
-        {
-            var joke = _context.Jokes.Find(id);
-            if (joke != null)
-            {
-                _context.Jokes.Remove(joke);
-                _context.SaveChanges();
-            }
-        }
+        }          
 
         public bool JokeExists(string content)
         {

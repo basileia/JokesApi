@@ -47,10 +47,10 @@ namespace JokesApi.Controllers
             return GetResponse(_serviceJoke.UpdateJoke(id, jokeModel));
         }
 
-        //[HttpDelete("{id}")]
-        //public ActionResult<bool> DeleteJoke(int id)
-        //{
-        //    return GetResponse(_serviceJoke.DeleteJoke(id));
-        //}
+        [HttpDelete("{id}")]
+        public ActionResult DeleteJoke(int id)
+        {
+            return GetResponse(_serviceJoke.DeleteJoke(id));
+        }
     }
 }

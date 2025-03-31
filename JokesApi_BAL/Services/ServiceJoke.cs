@@ -5,6 +5,7 @@ using JokesApi_BAL.Models.Errors;
 using JokesApi_BAL.Models.Joke;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
+using LanguageExt;
 using Microsoft.AspNetCore.Http;
 
 namespace JokesApi_BAL.Services
@@ -84,17 +85,16 @@ namespace JokesApi_BAL.Services
             return GetJokeById(id);
         }
 
-        public Result<bool, Error>? DeleteJoke(int id)
+        public Result<Unit, Error>? DeleteJoke(int id)
         {
             var existingJoke = GetJokeById(id);
-
             if (existingJoke.Error != null)
             {
                 return JokeErrors.JokeNotFound;
             }
 
             _repositoryJoke.Delete(id);
-            return true;
+            return Unit.Default;
         }
     }
 }
