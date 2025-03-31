@@ -41,11 +41,11 @@ namespace JokesApi.Controllers
             return GetResponse(result, nameof(GetJoke), new { id = result.Value.Id });
         }
 
-        //[HttpPut("{id}")]
-        //public ActionResult<JokeModel> UpdateJoke(int id, JokeModel jokeModel)
-        //{
-        //    return GetResponse(_serviceJoke.UpdateJoke(id, jokeModel));
-        //}
+        [HttpPut("{id}")]
+        public ActionResult<JokeDetailModel> UpdateJoke(int id, UpdateJokeModel jokeModel)
+        {
+            return GetResponse(_serviceJoke.UpdateJoke(id, jokeModel));
+        }
 
         //[HttpDelete("{id}")]
         //public ActionResult<bool> DeleteJoke(int id)

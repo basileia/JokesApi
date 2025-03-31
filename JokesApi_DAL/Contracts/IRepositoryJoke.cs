@@ -8,5 +8,6 @@ namespace JokesApi_DAL.Contracts
         bool JokeExists(string content);
         void Update(Joke joke);
         void Delete(int id);
+        Joke? GetJokeByContent(string content, int excludeId);
     }
 }

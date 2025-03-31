@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JokesApi_BAL.Models;
+using JokesApi_BAL.Models.Category;
 using JokesApi_BAL.Models.Errors;
 using JokesApi_BAL.Models.Joke;
 using JokesApi_DAL.Contracts;
@@ -57,31 +58,31 @@ namespace JokesApi_BAL.Services
             return  _repositoryJoke.Add(joke);          
         }
 
-        //public Result<JokeModel, Error> UpdateJoke(int id, JokeModel jokeModel)
-        //{
-        //    if (id != jokeModel.Id)
-        //    {
-        //        return JokeErrors.JokeBadRequest;
-        //    }
+        public Result<JokeDetailModel, Error> UpdateJoke(int id, UpdateJokeModel jokeModel)
+        {
+            if (id != jokeModel.Id)
+                return JokeErrors.JokeBadRequest;
 
-        //    var existingJoke = GetJokeById(id);
+            var existingJokeResult = GetJokeById(id);
+            if (existingJokeResult.Error != null)
+                return JokeErrors.JokeNotFound;
 
-        //    if (existingJoke.Error != null)
-        //    {
-        //        return JokeErrors.JokeNotFound;
-        //    }
+            var existingJoke = existingJokeResult.Value; 
 
-        //    if (!_repositoryCategory.CategoryExists(jokeModel.CategoryId))
-        //    {
-        //        return CategoryErrors.CategoryNotFound;
-        //    }
+            if (_repositoryJoke.GetJokeByContent(jokeModel.Content, id) != null)
+                return JokeErrors.JokeExists;
 
-        //    var joke = _mapper.Map<Joke>(jokeModel);
-        //    joke.CreatedAt = DateTime.Now;
-        //    _repositoryJoke.Update(joke);
+            if (jokeModel.CategoryId.HasValue && jokeModel.CategoryId != existingJoke.CategoryId &&
+                !_repositoryCategory.CategoryExists(jokeModel.CategoryId.Value))
+            {
+                return CategoryErrors.CategoryNotFound;
+            }
 
-        //    return GetJokeById(id);
-        //}
+            var joke = _mapper.Map<Joke>(jokeModel);
+            _repositoryJoke.Update(joke);
+
+            return GetJokeById(id);
+        }
 
         public Result<bool, Error>? DeleteJoke(int id)
         {

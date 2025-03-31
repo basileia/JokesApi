@@ -40,5 +40,10 @@ namespace JokesApi_DAL.Repository
         {
             return _context.Jokes.Any(e => e.Content == content);
         }
+
+        public Joke? GetJokeByContent(string content, int excludeId)
+        {
+            return GetByProperty(j => j.Content == content && j.Id != excludeId);
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace JokesApi_BAL.Extensions
             CreateMap<Joke, JokeModel>().ReverseMap();
             CreateMap<Joke, JokeDetailModel>().ReverseMap();
             CreateMap<Joke, CreateJokeModel>().ReverseMap();
+            CreateMap<Joke, UpdateJokeModel>().ReverseMap();
         }
     }
 }
