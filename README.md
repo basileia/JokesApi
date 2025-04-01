@@ -1,5 +1,5 @@
 # JokesAPI  
-A simple REST API for managing jokes and categories, built with **ASP.NET Core** and **Entity Framework Core**.
+A REST API for managing jokes and categories, built with **ASP.NET Core** and **Entity Framework Core**.
 
 ## Features  
 - **CRUD operations** for jokes and categories  
