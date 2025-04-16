@@ -19,8 +19,19 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddAutoMapper(typeof(JokeProfile), typeof(CategoryProfile));
 
 var Configuration = builder.Configuration;
-builder.Services.AddDbContext<AppDbContext>(options =>  
-        options.UseNpgsql(Configuration.GetConnectionString("WebApiDbConnection")));
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
+    ?? Configuration.GetConnectionString("WebApiDbConnection");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(connectionString, npgsqlOptions =>
+    {
+        npgsqlOptions.CommandTimeout(120); 
+        npgsqlOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorCodesToAdd: null);
+    }));
 
 builder.Services.AddScoped<ServiceCategory, ServiceCategory>();
 builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
