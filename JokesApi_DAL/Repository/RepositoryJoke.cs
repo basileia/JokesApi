@@ -35,5 +35,28 @@ namespace JokesApi_DAL.Repository
         {
             return GetByProperty(j => j.Content == content && j.Id != excludeId);
         }
+
+        public int GetCount()
+        {
+            return _context.Jokes.Count();
+        }
+
+        public Joke? GetRandom()
+        {
+            var count = GetCount();
+            if (count == 0) 
+            {
+                return null;
+            }
+
+            var randomIndex = Random.Shared.Next(0, count);
+
+            return _context.Jokes
+                .Include(j => j.Category)
+                .AsNoTracking()
+                .OrderBy(j => j.Id)
+                .Skip(randomIndex)
+                .FirstOrDefault();
+        }
     }
 }
