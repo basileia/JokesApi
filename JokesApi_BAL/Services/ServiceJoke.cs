@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using JokesApi_BAL.Models;
-using JokesApi_BAL.Models.Category;
 using JokesApi_BAL.Models.Errors;
 using JokesApi_BAL.Models.Joke;
 using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
 using LanguageExt;
-using Microsoft.AspNetCore.Http;
+
+using NuGet.Protocol.Core.Types;
 
 namespace JokesApi_BAL.Services
 {
@@ -95,6 +95,17 @@ namespace JokesApi_BAL.Services
 
             _repositoryJoke.Delete(id);
             return Unit.Default;
+        }
+
+        public Result<Joke, Error> GetRandomJoke()
+        {
+            var joke = _repositoryJoke.GetRandom();
+            if (joke == null)
+            {
+                return JokeErrors.JokeNotFound;
+            }
+
+            return joke;
         }
     }
 }
