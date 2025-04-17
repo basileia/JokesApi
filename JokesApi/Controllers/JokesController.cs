@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JokesApi_BAL.Services;
 using JokesApi_BAL.Models.Joke;
-using JokesApi_BAL.Models.Category;
+using JokesApi_DAL.Entities;
 
 namespace JokesApi.Controllers
 {
@@ -51,6 +51,12 @@ namespace JokesApi.Controllers
         public ActionResult DeleteJoke(int id)
         {
             return GetResponse(_serviceJoke.DeleteJoke(id));
+        }
+
+        [HttpGet("random")]
+        public ActionResult GetRandom()
+        {
+            return GetResponse(_serviceJoke.GetRandomJoke());
         }
     }
 }
