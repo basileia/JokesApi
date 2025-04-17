@@ -8,5 +8,7 @@ namespace JokesApi_DAL.Contracts
         bool JokeExists(string content);
         void Update(Joke joke);
         Joke? GetJokeByContent(string content, int excludeId);
+        int GetCount();
+        Joke? GetRandom();
     }
 }
