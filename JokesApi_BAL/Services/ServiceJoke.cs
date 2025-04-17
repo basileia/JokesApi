@@ -6,8 +6,6 @@ using JokesApi_DAL.Contracts;
 using JokesApi_DAL.Entities;
 using LanguageExt;
 
-using NuGet.Protocol.Core.Types;
-
 namespace JokesApi_BAL.Services
 {
     public class ServiceJoke
@@ -97,7 +95,7 @@ namespace JokesApi_BAL.Services
             return Unit.Default;
         }
 
-        public Result<Joke, Error> GetRandomJoke()
+        public Result<JokeDetailModel, Error> GetRandomJoke()
         {
             var joke = _repositoryJoke.GetRandom();
             if (joke == null)
@@ -105,7 +103,7 @@ namespace JokesApi_BAL.Services
                 return JokeErrors.JokeNotFound;
             }
 
-            return joke;
+            return _mapper.Map<JokeDetailModel>(joke);
         }
     }
 }
