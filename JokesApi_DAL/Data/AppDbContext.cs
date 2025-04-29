@@ -14,9 +14,16 @@ namespace JokesApi_DAL.Data
                 .WithMany(e => e.Jokes)
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<JokeLike>()
+                .HasOne(jl => jl.Joke)
+                .WithMany(j => j.Likes)
+                .HasForeignKey(jl => jl.JokeId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
-        public DbSet<Joke> Jokes { get; set; }
+        public DbSet<Joke> Jokes { get; set; } = default!;
         public DbSet<Category> Categories { get; set; } = default!;
+        public DbSet<JokeLike> JokeLikes { get; set; } = default!;
     }
 }
