@@ -38,6 +38,8 @@ builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
 builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
+builder.Services.AddScoped<IRepositoryJokeLike, RepositoryJokeLike>();
+builder.Services.AddScoped<ServiceJokeLike, ServiceJokeLike>();
 builder.Services.AddScoped<IMapper, Mapper>();
 
 builder.Services.AddEndpointsApiExplorer();
