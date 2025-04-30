@@ -64,15 +64,12 @@ namespace JokesApi.Controllers
         [HttpPost("{id}/like")]
         public ActionResult LikeJoke(int id)
         {
-            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
-            var userAgent = Request.Headers["User-Agent"].ToString() ?? "unknown";
-
             var model = new JokeLikeUpdateModel
             {
                 JokeId = id
             };
 
-            return GetResponse(_serviceJokeLike.AddLike(model, ipAddress, userAgent));
+            return GetResponse(_serviceJokeLike.AddLike(model));
         }
 
         [HttpGet("{id}/likes/count")]
