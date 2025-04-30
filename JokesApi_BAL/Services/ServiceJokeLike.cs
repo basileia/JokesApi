@@ -20,11 +20,6 @@ namespace JokesApi_BAL.Services
             _mapper = mapper;
         }
 
-        //public bool HasUserLiked(int jokeId, string ipAddress, string userAgent)
-        //{
-        //    return _repositoryJokeLike.HasUserLikedJoke(jokeId, ipAddress, userAgent);
-        //}
-
         public Result<int, Error> GetLikeCount(int jokeId)
         {
             var joke = _repositoryJoke.GetById(jokeId);
