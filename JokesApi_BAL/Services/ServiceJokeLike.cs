@@ -28,13 +28,13 @@ namespace JokesApi_BAL.Services
             return _repositoryJokeLike.GetLikeCount(jokeId);
         }
 
-        public Result<int, Error> AddLike(JokeLikeUpdateModel jokeLikeModel, string ipAddress, string userAgent)
+        public Result<int, Error> AddLike(JokeLikeUpdateModel jokeLikeModel)
         {
-            if (_repositoryJokeLike.HasUserLikedJoke(jokeLikeModel.JokeId, ipAddress, userAgent))
+            TimeSpan delay = TimeSpan.FromSeconds(2);
+            if (_repositoryJokeLike.WasRecentlyLiked(jokeLikeModel.JokeId, delay))
             {
                 return JokeLikeErrors.AlreadyLiked;
             }
-
             var jokeResult = _repositoryJoke.GetById(jokeLikeModel.JokeId);
             if (jokeResult == null)
             {
@@ -43,15 +43,13 @@ namespace JokesApi_BAL.Services
 
             var jokeLike = new JokeLike
             {
-                JokeId = jokeLikeModel.JokeId,
-                IpAddress = ipAddress,
-                UserAgent = userAgent,
+                JokeId = jokeLikeModel.JokeId,               
                 CreatedAt = DateTime.Now
             };
 
             _repositoryJokeLike.Add(jokeLike);
             var likeCount = GetLikeCount(jokeLikeModel.JokeId);
             return likeCount;
-        }
+        }        
     }
 }

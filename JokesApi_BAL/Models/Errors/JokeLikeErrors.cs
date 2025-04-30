@@ -2,6 +2,6 @@
 {
     public class JokeLikeErrors
     {
-        public static readonly Error AlreadyLiked = new("JokeLikes.AlreadyLiked", "You have already liked this joke.");
+        public static readonly Error AlreadyLiked = new("JokeLikes.AlreadyLiked", "You have already liked this joke recently.");
     }
 }
