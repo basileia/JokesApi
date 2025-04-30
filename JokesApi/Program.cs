@@ -16,7 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 );
-builder.Services.AddAutoMapper(typeof(JokeProfile), typeof(CategoryProfile));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var Configuration = builder.Configuration;
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
@@ -38,6 +38,8 @@ builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<ServiceJoke, ServiceJoke>();
 builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
+builder.Services.AddScoped<IRepositoryJokeLike, RepositoryJokeLike>();
+builder.Services.AddScoped<ServiceJokeLike, ServiceJokeLike>();
 builder.Services.AddScoped<IMapper, Mapper>();
 
 builder.Services.AddEndpointsApiExplorer();

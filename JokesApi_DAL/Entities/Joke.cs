@@ -10,5 +10,7 @@ namespace JokesApi_DAL.Entities
         public DateTime CreatedAt { get; set; }
         public int? CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public ICollection<JokeLike> Likes { get; set; } = new List<JokeLike>();
     }
 }
