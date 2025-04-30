@@ -13,6 +13,7 @@ namespace JokesApi_DAL.Repository
         {
             var joke = _context.Jokes
                 .Include(_ => _.Category)
+                .Include(_ => _.Likes)
                 .AsNoTracking()
                 .Where(_ => _.Id == id)
                 .FirstOrDefault();
