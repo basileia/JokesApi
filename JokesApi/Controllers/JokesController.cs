@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using JokesApi_BAL.Services;
 using JokesApi_BAL.Models.Joke;
-using JokesApi_DAL.Entities;
+using JokesApi_BAL.Models.JokeLike;
 
 namespace JokesApi.Controllers
 {
@@ -10,10 +10,12 @@ namespace JokesApi.Controllers
     public class JokesController : BaseController
     {
         private readonly ServiceJoke _serviceJoke;
+        private readonly ServiceJokeLike _serviceJokeLike;
 
-        public JokesController(ServiceJoke serviceJoke)
+        public JokesController(ServiceJoke serviceJoke, ServiceJokeLike serviceJokeLike)
         {
             _serviceJoke = serviceJoke;
+            _serviceJokeLike = serviceJokeLike;
         }
 
         [HttpGet]
@@ -57,6 +59,26 @@ namespace JokesApi.Controllers
         public ActionResult GetRandom()
         {
             return GetResponse(_serviceJoke.GetRandomJoke());
+        }
+
+        [HttpPost("{id}/like")]
+        public ActionResult LikeJoke(int id)
+        {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+            var userAgent = Request.Headers["User-Agent"].ToString() ?? "unknown";
+
+            var model = new JokeLikeUpdateModel
+            {
+                JokeId = id
+            };
+
+            return GetResponse(_serviceJokeLike.AddLike(model, ipAddress, userAgent));
+        }
+
+        [HttpGet("{id}/likes/count")]
+        public ActionResult GetLikeCount(int id)
+        {
+            return GetResponse(_serviceJokeLike.GetLikeCount(id));
         }
     }
 }

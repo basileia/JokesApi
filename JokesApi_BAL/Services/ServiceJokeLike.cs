@@ -25,8 +25,14 @@ namespace JokesApi_BAL.Services
         //    return _repositoryJokeLike.HasUserLikedJoke(jokeId, ipAddress, userAgent);
         //}
 
-        public int GetLikeCount(int jokeId)
+        public Result<int, Error> GetLikeCount(int jokeId)
         {
+            var joke = _repositoryJoke.GetById(jokeId);
+            if (joke == null)
+            {
+                return JokeErrors.JokeNotFound;
+            }
+
             return _repositoryJokeLike.GetLikeCount(jokeId);
         }
 
