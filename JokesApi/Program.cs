@@ -16,7 +16,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 );
-builder.Services.AddAutoMapper(typeof(JokeProfile), typeof(CategoryProfile));
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var Configuration = builder.Configuration;
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
