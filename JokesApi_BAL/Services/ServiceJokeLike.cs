@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using JokesApi_BAL.Models.Errors;
+﻿using JokesApi_BAL.Models.Errors;
 using JokesApi_BAL.Models.JokeLike;
 using JokesApi_BAL.Models;
 using JokesApi_DAL.Contracts;
@@ -11,13 +10,11 @@ namespace JokesApi_BAL.Services
     {
         private readonly IRepositoryJokeLike _repositoryJokeLike;
         private readonly IRepositoryJoke _repositoryJoke;
-        private readonly IMapper _mapper;
 
-        public ServiceJokeLike(IRepositoryJokeLike repositoryJokeLike, IRepositoryJoke repositoryJoke, IMapper mapper)
+        public ServiceJokeLike(IRepositoryJokeLike repositoryJokeLike, IRepositoryJoke repositoryJoke)
         {
             _repositoryJokeLike = repositoryJokeLike;
             _repositoryJoke = repositoryJoke;
-            _mapper = mapper;
         }
 
         public Result<int, Error> GetLikeCount(int jokeId)
