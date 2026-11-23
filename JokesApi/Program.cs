@@ -14,9 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-}
-);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+});
+
+builder.Services.AddAutoMapper(
+    _ => { },
+    AppDomain.CurrentDomain.GetAssemblies());
 
 var Configuration = builder.Configuration;
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
@@ -40,7 +42,6 @@ builder.Services.AddScoped<IRepositoryJoke, RepositoryJoke>();
 builder.Services.AddScoped<IRepositoryCategory, RepositoryCategory>();
 builder.Services.AddScoped<IRepositoryJokeLike, RepositoryJokeLike>();
 builder.Services.AddScoped<ServiceJokeLike, ServiceJokeLike>();
-builder.Services.AddScoped<IMapper, Mapper>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
